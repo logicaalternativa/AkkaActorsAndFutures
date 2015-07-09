@@ -1,0 +1,5 @@
+.classpath
+.project
+etc/
+target/
+src/test/java/com/logicaalternativa/examples/akka/HelloSpockTest.groovy
