@@ -11,13 +11,9 @@ import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 import akka.actor.ActorRef;
+import akka.actor.DeadLetter;
 import akka.actor.Props;
-import akka.actor.Terminated;
-import akka.dispatch.OnComplete;
-import akka.dispatch.sysmsg.Terminate;
 import akka.pattern.Patterns;
-import akka.routing.NoRouter;
-import akka.routing.RouterConfig;
 
 import com.logicaalternativa.examples.akka.testbase.TestBase;
 
@@ -29,24 +25,25 @@ public class DeadLettersTest extends TestBase {
 		
 		___GIVEN( "It's created an actor and a reader deadletters" );
 		
-		final Props props = Props.create( ActorNoTypedDummyII.class );
+		final Props props = Props.create( ActorNoTypedDummyII.class );		
 		
+		final ActorRef actorRef = system.actorOf( props, "dummy");		
 		
-		final ActorRef actorRef = system.actorOf( props, "dummy");
-				
+		final Props propsReadDeadLetters = Props.create( ActorNoTypedReadDeadLetter.class );
 		
-		___WHEN(" It is sent an terminate message");		
-
+		final ActorRef actorDeadLetters = system.actorOf( propsReadDeadLetters, "dead-letters" );
+		
+		__INFO( "**************************************************************" );
+		
+		___WHEN(" It is stopped the actor and then it's sent a message");		
 		
 		system.stop( actorRef );		
 		
-		Future<Object> future = Patterns.ask( actorRef, "bye" , 5000 );
-		
-		final Object res = Await.result( future, Duration.create( "1 second") );
+		Future<Object> future1 = Patterns.ask( actorRef, "bye" , 5000 );
 		
 		try {
 			
-			Await.result( future, Duration.create( " 1 second") );			
+			Await.result( future1, Duration.create( " 1 second") );			
 			
 			fail( "Ey!!! You don't have to be here!" );
 			
@@ -57,7 +54,42 @@ public class DeadLettersTest extends TestBase {
 			
 			assertEquals( e.getClass().getSimpleName(), TimeoutException.class.getSimpleName() );			
 			
-		}	
+		}
+		
+		__INFO( "**************************************************************" );
+		
+		__INFO( "And after..." );		
+		
+		___WHEN(" When It's send a 'lastDeadLetter' to check the dead letters");
+		
+		final Future<Object> future2 = Patterns.ask( actorDeadLetters, "lastDeadLetter" , 3000 );
+		
+		Object result2 = Await.result( future2, Duration.create( " 1 second") );		
+		
+
+		final DeadLetter deadLetter = result2 instanceof DeadLetter 
+											?( DeadLetter ) result2
+													: null;
+		
+		final String message = deadLetter != null && deadLetter.message() != null && deadLetter.message() instanceof String
+									? ( String )deadLetter.message() 
+											: null;
+									
+		final ActorRef recipient = deadLetter != null
+									? deadLetter.recipient()
+											: null;
+									
+		final String nameActorRef = recipient != null 
+										? recipient.path().name()
+												: null;
+									
+		___THEN( "The dead letter message musts be 'bye' "
+				+ "(" + message + ") and the actor recipient must be"
+				+ " 'dummy' (" + nameActorRef +")" );
+		
+		assertEquals("bye", message);
+		
+		assertEquals("dummy", nameActorRef);
 		
 		
 	}
