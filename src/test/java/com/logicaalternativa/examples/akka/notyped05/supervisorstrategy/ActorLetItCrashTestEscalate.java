@@ -22,6 +22,13 @@ import com.logicaalternativa.examples.akka.testbase.TestBase;
 
 public class ActorLetItCrashTestEscalate extends TestBase {
 	
+	@Override
+	protected String setAditionalConfig() {
+		
+		// It's not needed additional configuration		
+		return null;
+	}
+	
 	@Test	
 	public void test() throws Exception {
 		
@@ -50,7 +57,7 @@ public class ActorLetItCrashTestEscalate extends TestBase {
 		
 		final ActorRef actorDeadLetters = system.actorOf( propsReadDeadLetters, "dead-letters" );
 		
-		final BooleanAnd booleanAnd = new BooleanAnd();		
+		initResultBoolean();
 		
 		
 		__INFO( "**************************************************************" );
@@ -68,9 +75,9 @@ public class ActorLetItCrashTestEscalate extends TestBase {
 						+ "INI => AROUND_PRE_START => PRE_START "
 						+ "(" + arg1 + ")" );
 				
-				booleanAnd.and( exception == null );
+				addResultAndValue( exception == null );
 				
-				booleanAnd.and( "INI => AROUND_PRE_START => PRE_START".equals(arg1)  );
+				addResultAndValue( "INI => AROUND_PRE_START => PRE_START".equals(arg1)  );
 				
 			}
 			
@@ -97,9 +104,9 @@ public class ActorLetItCrashTestEscalate extends TestBase {
 						+ "'I'm going to pass away'"
 						+ " (exception: " + exception + ", message: "+ arg1 +")" );
 				
-				booleanAnd.and( exception == null );
+				addResultAndValue( exception == null );
 				
-				booleanAnd.and( "I'm going to pass away".equals( arg1 ) );
+				addResultAndValue( "I'm going to pass away".equals( arg1 ) );
 				
 			}
 			
@@ -117,7 +124,7 @@ public class ActorLetItCrashTestEscalate extends TestBase {
 		
 		try {
 			
-			final Object result3 = Await.result( future3, Duration.create( "1 second") );			
+			Await.result( future3, Duration.create( "1 second") );			
 			
 			fail( "Ey!!! You don't have to be here!" );		
 			
@@ -166,11 +173,11 @@ public class ActorLetItCrashTestEscalate extends TestBase {
 						+ "(" + message + ") and the actor recipient must be"
 						+ " 'child' (" + nameActorRef +")" );
 				
-				booleanAnd.and( exception == null );
+				addResultAndValue( exception == null );
 				
-				booleanAnd.and( "state".equals( message  )  );
+				addResultAndValue( "state".equals( message  )  );
 				
-				booleanAnd.and( "child".equals( nameActorRef ) );
+				addResultAndValue( "child".equals( nameActorRef ) );
 				
 			}
 			
@@ -180,7 +187,7 @@ public class ActorLetItCrashTestEscalate extends TestBase {
 		
 		__INFO( "**************************************************************" );
 		
-		__INFO( "And after..." );		
+		__INFO( "And after..." );
 		
 		___WHEN(" if send a message 'state' again");
 		
@@ -197,9 +204,16 @@ public class ActorLetItCrashTestEscalate extends TestBase {
 		
 		__INFO( "**************************************************************" );
 		
-		__INFO("... and finally, it's going to check all the futur results (" + booleanAnd.getRes() + ")");
+		__INFO( "It's only for waiting the result of agent" );
 		
-		assertEquals( true, booleanAnd.getRes() );
+		Thread.sleep( 1000 );
+		
+		Boolean resultBoolean = getResultBoolean();
+		
+		
+		__INFO("... and finally, it's going to check all the futur results (" + resultBoolean + ")");
+		
+		assertEquals( true, resultBoolean );
 		
 	}
 	

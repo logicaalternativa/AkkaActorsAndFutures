@@ -18,6 +18,13 @@ import com.logicaalternativa.examples.akka.testbase.TestBase;
 
 public class ActorLetItCrashTestDefault extends TestBase {
 	
+	@Override
+	protected String setAditionalConfig() {
+		
+		// It's not needed additional configuration		
+		return null;
+	}
+	
 	@Test	
 	public void test() throws Exception {
 		
@@ -42,7 +49,7 @@ public class ActorLetItCrashTestDefault extends TestBase {
 		
 		final ActorRef actorRef = system.actorOf( props, "let-itcrass" );	
 		
-		final BooleanAnd booleanAnd = new BooleanAnd();		
+		initResultBoolean();
 		
 		
 		__INFO( "**************************************************************" );
@@ -60,9 +67,9 @@ public class ActorLetItCrashTestDefault extends TestBase {
 						+ "INI => AROUND_PRE_START => PRE_START "
 						+ "(" + arg1 + ")" );
 				
-				booleanAnd.and( exception == null );
+				addResultAndValue( exception == null );
 				
-				booleanAnd.and( "INI => AROUND_PRE_START => PRE_START".equals(arg1)  );
+				addResultAndValue( "INI => AROUND_PRE_START => PRE_START".equals(arg1)  );
 				
 			}
 			
@@ -89,9 +96,9 @@ public class ActorLetItCrashTestDefault extends TestBase {
 						+ "'I'm going to pass away'"
 						+ " (exception: " + exception + ", message: "+ arg1 +")" );
 				
-				booleanAnd.and( exception == null );
+				addResultAndValue( exception == null );
 				
-				booleanAnd.and( "I'm going to pass away".equals( arg1 ) );
+				addResultAndValue( "I'm going to pass away".equals( arg1 ) );
 				
 			}
 			
@@ -115,9 +122,16 @@ public class ActorLetItCrashTestDefault extends TestBase {
 		assertEquals( "INI => AROUND_POST_RESTART => POST_RESTART => PRE_START", result3 );
 		
 		
-		__INFO("... and finally, it's going to check all the futur results (" + booleanAnd.getRes() + ")");
+		__INFO( "It's only for waiting the result of agent" );
 		
-		assertEquals( true, booleanAnd.getRes() );
+		Thread.sleep( 1000 );
+		
+		Boolean resultBoolean = getResultBoolean();
+		
+		
+		__INFO("... and finally, it's going to check all the futur results (" + resultBoolean + ")");
+		
+		assertEquals( true, resultBoolean );
 		
 	}
 	

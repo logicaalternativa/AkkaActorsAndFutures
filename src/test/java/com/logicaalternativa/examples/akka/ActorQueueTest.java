@@ -16,6 +16,12 @@ import com.logicaalternativa.examples.akka.testbase.TestBase;
 
 public class ActorQueueTest extends TestBase {	
 	
+	@Override
+	protected String setAditionalConfig() {
+		
+		// It's not needed additional configuration		
+		return null;
+	}
 	
 	@Test	
 	public void test() throws Exception {
@@ -24,8 +30,8 @@ public class ActorQueueTest extends TestBase {
 		
 		int numberMessages = 10;
 		
-		___GIVEN( "Se crea un actor en el sistema que devuelve el mismo mensaje o "
-		          +"bien duerme durante un tiempo" );
+		___GIVEN( "It's created an actor that returs the same message or It "
+				+ "sleeps for a time" );
 		
 		final Props props = Props.create( ActorNoTypedDummy.class );
 		
@@ -38,7 +44,7 @@ public class ActorQueueTest extends TestBase {
 		
 		__INFO(" It was sent sleep: " + sleep );	
 		
-		final BooleanAnd booleanAnd = new BooleanAnd();		
+		initResultBoolean();		
 		
 		for ( int i=0; i <= numberMessages; i++ ) {
 			
@@ -56,13 +62,11 @@ public class ActorQueueTest extends TestBase {
 					
 					___THEN( "The menssage recibied must be equal to message sent (" + messageResponse + ", " + messageSent + ")" );
 					
-					booleanAnd.and( messageSent.equals( messageResponse ) );
+					 addResultAndValue( messageSent.equals( messageResponse ) );
 					
 				}
 				
-				
 			}, system.dispatcher() );
-			
 			
 		}	
 		
@@ -76,7 +80,7 @@ public class ActorQueueTest extends TestBase {
 		
 		__INFO("... and finally, it is going to check all the futur result");
 		
-		assertEquals( true, booleanAnd.getRes() );
+		assertEquals( true, getResultBoolean() );
 		
 	}
 

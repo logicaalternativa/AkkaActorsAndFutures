@@ -1,6 +1,7 @@
 package com.logicaalternativa.examples.akka.notyped05.supervisorstrategy;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.concurrent.TimeoutException;
 
@@ -21,6 +22,13 @@ import com.logicaalternativa.examples.akka.ActorNoTypedReadDeadLetter;
 import com.logicaalternativa.examples.akka.testbase.TestBase;
 
 public class ActorLetItCrashTestStop extends TestBase {
+	
+	@Override
+	protected String setAditionalConfig() {
+		
+		// It's not needed additional configuration		
+		return null;
+	}
 	
 	@Test	
 	public void test() throws Exception {
@@ -48,7 +56,7 @@ public class ActorLetItCrashTestStop extends TestBase {
 		
 		final ActorRef actorDeadLetters = system.actorOf( propsReadDeadLetters, "dead-letters" );
 		
-		final BooleanAnd booleanAnd = new BooleanAnd();		
+		initResultBoolean();
 		
 		
 		__INFO( "**************************************************************" );
@@ -66,9 +74,9 @@ public class ActorLetItCrashTestStop extends TestBase {
 						+ "INI => AROUND_PRE_START => PRE_START "
 						+ "(" + arg1 + ")" );
 				
-				booleanAnd.and( exception == null );
+				addResultAndValue( exception == null );
 				
-				booleanAnd.and( "INI => AROUND_PRE_START => PRE_START".equals(arg1)  );
+				addResultAndValue( "INI => AROUND_PRE_START => PRE_START".equals(arg1)  );
 				
 			}
 			
@@ -152,15 +160,15 @@ public class ActorLetItCrashTestStop extends TestBase {
 						+ "(" + message + ") and the actor recipient must be"
 						+ " 'child' (" + nameActorRef +")" );
 				
-				booleanAnd.and( exception == null );
+				addResultAndValue( exception == null );
 				
-				booleanAnd.and( "state".equals( message  )  );
+				addResultAndValue( "state".equals( message  )  );
 				
-				booleanAnd.and( "child".equals( nameActorRef  )  );
+				addResultAndValue( "child".equals( nameActorRef  )  );
 				
 			}
 			
-		}, system.dispatcher() );		
+		}, system.dispatcher() );
 		
 		
 		
@@ -182,9 +190,15 @@ public class ActorLetItCrashTestStop extends TestBase {
 		
 		__INFO( "**************************************************************" );
 		
-		__INFO("... and finally, it's going to check all the futur results (" + booleanAnd.getRes() + ")");
+		__INFO( "It's only for waiting the result of agent" );
 		
-		assertEquals( true, booleanAnd.getRes() );
+		Thread.sleep( 1000 );
+		
+		Boolean resultBoolean = getResultBoolean();
+		
+		__INFO("... and finally, it's going to check all the futur results (" + resultBoolean + ")");
+		
+		assertEquals( true, resultBoolean );
 		
 	}
 	

@@ -1,6 +1,7 @@
 package com.logicaalternativa.examples.akka;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.concurrent.TimeoutException;
@@ -13,12 +14,20 @@ import scala.concurrent.duration.Duration;
 import akka.actor.ActorRef;
 import akka.actor.DeadLetter;
 import akka.actor.Props;
+import akka.pattern.AskTimeoutException;
 import akka.pattern.Patterns;
 
 import com.logicaalternativa.examples.akka.testbase.TestBase;
 
 public class DeadLettersTest extends TestBase {	
 	
+	
+	@Override
+	protected String setAditionalConfig() {
+		
+		// It's not needed additional configuration		
+		return null;
+	}
 	
 	@Test	
 	public void test() throws Exception {
@@ -43,7 +52,7 @@ public class DeadLettersTest extends TestBase {
 		
 		try {
 			
-			Await.result( future1, Duration.create( " 1 second") );			
+			Await.result( future1, Duration.create( "2 second") );			
 			
 			fail( "Ey!!! You don't have to be here!" );
 			
@@ -52,7 +61,9 @@ public class DeadLettersTest extends TestBase {
 			___THEN( "The menssage is loosed The exception must be 'TimeoutException' "
 					+ "(" + e.getClass().getSimpleName() + ")");
 			
-			assertEquals( e.getClass().getSimpleName(), TimeoutException.class.getSimpleName() );			
+			assertTrue( e.getClass().getSimpleName().equals(  TimeoutException.class.getSimpleName() )
+						|| e.getClass().getSimpleName().equals(  AskTimeoutException.class.getSimpleName() )
+						);			
 			
 		}
 		
@@ -64,7 +75,7 @@ public class DeadLettersTest extends TestBase {
 		
 		final Future<Object> future2 = Patterns.ask( actorDeadLetters, "lastDeadLetter" , 3000 );
 		
-		Object result2 = Await.result( future2, Duration.create( " 1 second") );		
+		Object result2 = Await.result( future2, Duration.create( "1 second") );		
 		
 
 		final DeadLetter deadLetter = result2 instanceof DeadLetter 

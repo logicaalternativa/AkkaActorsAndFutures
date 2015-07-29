@@ -15,6 +15,14 @@ import akka.pattern.Patterns;
 import com.logicaalternativa.examples.akka.testbase.TestBase;
 
 public class ActorProxyTest extends TestBase {
+	
+	@Override
+	protected String setAditionalConfig() {
+		
+		// It's not needed additional configuration		
+		return null;
+	}
+	
 
 	@Test	
 	public void testForward() throws Exception {
