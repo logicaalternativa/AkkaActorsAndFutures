@@ -12,7 +12,6 @@ public class ActorNoTypedReadDeadLetter extends UntypedActor  {
 	
 	protected LoggingAdapter logger = Logging.getLogger( getContext().system(), this );	
 	
-	
 	private List<DeadLetter> listDeadLetters;
 	
 	public ActorNoTypedReadDeadLetter( ) {

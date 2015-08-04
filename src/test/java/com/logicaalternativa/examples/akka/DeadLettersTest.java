@@ -22,13 +22,6 @@ import com.logicaalternativa.examples.akka.testbase.TestBase;
 public class DeadLettersTest extends TestBase {	
 	
 	
-	@Override
-	protected String setAditionalConfig() {
-		
-		// It's not needed additional configuration		
-		return null;
-	}
-	
 	@Test	
 	public void test() throws Exception {
 		

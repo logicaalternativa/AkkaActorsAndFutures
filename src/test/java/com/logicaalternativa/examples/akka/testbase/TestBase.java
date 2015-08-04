@@ -16,7 +16,7 @@ import akka.event.LoggingAdapter;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
-public abstract class TestBase {
+public class TestBase {
 	
 	protected LoggingAdapter loggerActor;
 	
@@ -24,10 +24,8 @@ public abstract class TestBase {
 	
 	private Agent<Boolean> resultBoolean;
 	
-	protected abstract String setAditionalConfig();
-	
 	@Before
-	public void before(){
+	public void setUp(){
 		
 		final String simpleNameClass = getClass().getSimpleName();		
 		
@@ -38,6 +36,13 @@ public abstract class TestBase {
 		loggerActor = Logging.getLogger( system, this ); 
 		
 	}
+	
+	protected String setAditionalConfig() {
+		
+		return null;
+		
+	}	
+	
 
 	private void createSystemActor (final String simpleNameClass, final String adicionalConfig) {
 		
@@ -61,7 +66,7 @@ public abstract class TestBase {
 	
 	
 	@After
-	public void afteTest(){
+	public void tearDown(){
 		
 		if ( system != null ) {
 			
@@ -74,10 +79,10 @@ public abstract class TestBase {
 	
 	protected void initResultBoolean(){
 		
-		ExecutionContextExecutor executor = ExecutionContexts.fromExecutor( Executors.newFixedThreadPool( 1 ) );
+//		ExecutionContextExecutor executor = ExecutionContexts.fromExecutor( Executors.newFixedThreadPool( 1 ) );
 		
-//		resultBoolean = Agent.create( null, ExecutionContexts.global() );
-		resultBoolean = Agent.create( null, executor );
+//		resultBoolean = Agent.create( null, executor );
+		resultBoolean = Agent.create( null, ExecutionContexts.global() );
 		
 	}
 	
@@ -126,26 +131,26 @@ public abstract class TestBase {
 		
 	protected void ___GIVEN(String text) {
 		
-		log( " ___ GIVEN :" + text );		
+		log( "___ GIVEN :" + text );		
 		
 	}	
 	
 	protected void ___WHEN(String text) {
 		
-		log( " ___ WHEN :" + text );
+		log( "___  WHEN :" + text );
 		
 	}
 	
 
 	protected void ___THEN( String text) {
 		
-		log( "___ THEN :" + text );
-		
+		log( "___   THEN :" + text );
+		 
 	}
 	
 	protected void __INFO( String text) {
 		
-		log( "__ INFO :" + text );
+		log( "__      INFO :" + text );
 		
 	}
 	
