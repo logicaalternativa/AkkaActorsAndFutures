@@ -48,11 +48,11 @@ public class ActorNoTypedLetItCrash extends UntypedActor  {
 			
 		}  else if ( isActorChildAlive ) {
 			
-			actorChild.forward( message, getContext() );			
+			actorChild.forward( message, getContext() );
 			
 		} else {
 			
-		    sender().tell("Actor child passed away", self() );
+			sender().tell("Actor child passed away", self() );
 			
 		}
 		
@@ -98,7 +98,7 @@ public class ActorNoTypedLetItCrash extends UntypedActor  {
 			if ( exception instanceof Exception ) {
 				
 				if ( "stop".equals( typeStrategy ) ){
-				
+					
 					return SupervisorStrategy.stop();
 					
 				} else if ( "resume".equals( typeStrategy ) ) {

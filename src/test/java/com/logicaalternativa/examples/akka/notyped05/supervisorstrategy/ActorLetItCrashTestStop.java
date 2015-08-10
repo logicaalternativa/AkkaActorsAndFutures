@@ -18,7 +18,7 @@ import akka.pattern.Patterns;
 
 import com.logicaalternativa.examples.akka.ActorNoTypedDummyII;
 import com.logicaalternativa.examples.akka.ActorNoTypedLetItCrash;
-import com.logicaalternativa.examples.akka.ActorNoTypedReadDeadLetter;
+import com.logicaalternativa.examples.akka.ActorNoTypedLogEvent;
 import com.logicaalternativa.examples.akka.testbase.TestBase;
 
 public class ActorLetItCrashTestStop extends TestBase {
@@ -33,7 +33,11 @@ public class ActorLetItCrashTestStop extends TestBase {
 		
 		final Props propsChild = Props.create( ActorNoTypedDummyII.class );
 		
-		final Props propsReadDeadLetters = Props.create( ActorNoTypedReadDeadLetter.class );
+		final Props propsReadDeadLetters = Props.create
+											( 	
+												ActorNoTypedLogEvent.class,
+												() -> new ActorNoTypedLogEvent<DeadLetter>( DeadLetter.class )
+											);
 		
 		final Props props = Props.create
 								( 
@@ -123,9 +127,9 @@ public class ActorLetItCrashTestStop extends TestBase {
 		
 		__INFO( "And after..." );		
 		
-		___WHEN(" When It's send a 'lastDeadLetter' to check the dead letters");
+		___WHEN(" When It's send a 'lastMessage' to check the dead letters");
 		
-		final Future<Object> future4 = Patterns.ask( actorDeadLetters, "lastDeadLetter" , 3000 );
+		final Future<Object> future4 = Patterns.ask( actorDeadLetters, "lastMessage" , 3000 );
 		
 		future4.onComplete( new OnComplete<Object>(){
 

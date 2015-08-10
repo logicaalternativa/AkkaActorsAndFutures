@@ -5,48 +5,25 @@ import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
-public class  ActorNoTypedDummyII extends UntypedActor  {
+public class  ActorNoTypedRuntimeExceptionConstructor extends UntypedActor  {
 	
 	private String state;
 	
 	protected LoggingAdapter logger = Logging.getLogger( getContext().system(), this );
 	
-	public ActorNoTypedDummyII() {
+	public ActorNoTypedRuntimeExceptionConstructor() {
 		
 		super();
 		
-		logger.info("From " + getClass().getSimpleName() + " ****** Constructor ***");
-		
-		logAndConcatState( "INI", "constructor" );
+		throw new RuntimeException("Exception from constructor");
 	
 	}
 	
 	@Override
 	public void onReceive(Object arg0) throws Exception {
 		
-		if ( arg0 instanceof String) {
+		getSender().tell( arg0, getSelf() );
 			
-			logger.info("From " + getClass().getSimpleName() + "  " + arg0 );			
-			
-			final String res =  ( "state".equals( arg0 ) ) ? state : (String) arg0;	
-				
-			getSender().tell( res, getSelf() );
-			
-		}  else if ( arg0 instanceof Exception) {
-			
-			logger.info("From " + getClass().getSimpleName() + "  throw exception" + ( (Exception) arg0 ).getMessage() );
-			
-			logAndConcatState( "EXCEPTION", "onReceive" );
-			
-			getSender().tell( "I'm going to pass away", getSelf() );
-			
-			throw (Exception) arg0;
-			
-		} else {
-		
-			unhandled( arg0 );
-		
-		}
 		
 	}
 	

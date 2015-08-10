@@ -6,10 +6,8 @@ import akka.event.LoggingAdapter;
 
 public class  ActorNoTypedDummy extends UntypedActor  {
 	
-//	protected Logger logger = Logger.getLogger( getClass().toString() );
-	
 	protected LoggingAdapter logger = Logging.getLogger( getContext().system(), this ); 
-
+	
 	@Override
 	public void onReceive(Object arg0) throws Exception {
 		

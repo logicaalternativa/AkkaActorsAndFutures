@@ -1,11 +1,8 @@
 package com.logicaalternativa.examples.akka.testbase;
 
-import java.util.concurrent.Executors;
-
 import org.junit.After;
 import org.junit.Before;
 
-import scala.concurrent.ExecutionContextExecutor;
 import akka.actor.ActorSystem;
 import akka.agent.Agent;
 import akka.dispatch.ExecutionContexts;
@@ -131,26 +128,26 @@ public class TestBase {
 		
 	protected void ___GIVEN(String text) {
 		
-		log( "___ GIVEN :" + text );		
+		log( "___ GIVEN : " + text );		
 		
 	}	
 	
 	protected void ___WHEN(String text) {
 		
-		log( "___  WHEN :" + text );
+		log( "___  WHEN : " + text );
 		
 	}
 	
 
 	protected void ___THEN( String text) {
 		
-		log( "___   THEN :" + text );
+		log( "___   THEN : " + text );
 		 
 	}
 	
 	protected void __INFO( String text) {
 		
-		log( "__      INFO :" + text );
+		log( "__      INFO : " + text );
 		
 	}
 	

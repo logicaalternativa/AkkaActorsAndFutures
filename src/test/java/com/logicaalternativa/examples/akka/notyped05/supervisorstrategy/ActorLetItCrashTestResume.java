@@ -84,7 +84,7 @@ public class ActorLetItCrashTestResume extends TestBase {
 			@Override
 			public void onComplete(Throwable exception, Object arg1) throws Throwable {
 				
-				___THEN( "The excetion must be null and message has to be equals "
+				___THEN( "The exception must be null and message has to be equals "
 						+ "'I'm going to pass away'"
 						+ " (exception: " + exception + ", message: "+ arg1 +")" );
 				

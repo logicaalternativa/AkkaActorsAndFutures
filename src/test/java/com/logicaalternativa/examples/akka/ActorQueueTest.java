@@ -1,12 +1,10 @@
 package com.logicaalternativa.examples.akka;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import scala.concurrent.Await;
 import scala.concurrent.Future;
-import scala.concurrent.duration.Duration;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.dispatch.OnComplete;
@@ -23,13 +21,17 @@ public class ActorQueueTest extends TestBase {
 		
 		int numberMessages = 10;
 		
+		long now = System.currentTimeMillis();
+		
 		___GIVEN( "It's created an actor that returs the same message or It "
 				+ "sleeps for a time" );
 		
 		final Props props = Props.create( ActorNoTypedDummy.class );
 		
-		final ActorRef actorRef = system.actorOf( props, "proxied");
-				
+		ActorRef actorRef = null;
+		
+		actorRef = system.actorOf( props, "proxied");
+		
 		
 		___WHEN(" It is sent an 'sleep' 200 and then it is sent a 10 messages ");		 
 				
@@ -63,13 +65,11 @@ public class ActorQueueTest extends TestBase {
 			
 		}	
 		
-		__INFO("Only for waiting all result");
 		
-		Future<Object> future = Patterns.ask( actorRef, "bye" , 5000 );
+		__INFO("Only for waiting all agent results ");
 		
-		final Object res = Await.result( future, Duration.create( "1 second") );
+		Thread.sleep( sleep + (System.currentTimeMillis() - now ) * 10  );
 		
-		assertEquals( "bye", res );
 		
 		__INFO("... and finally, it is going to check all the futur result");
 		

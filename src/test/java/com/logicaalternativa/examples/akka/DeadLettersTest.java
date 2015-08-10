@@ -31,7 +31,11 @@ public class DeadLettersTest extends TestBase {
 		
 		final ActorRef actorRef = system.actorOf( props, "dummy");		
 		
-		final Props propsReadDeadLetters = Props.create( ActorNoTypedReadDeadLetter.class );
+		final Props propsReadDeadLetters = Props.create
+											( 	
+												ActorNoTypedLogEvent.class,
+												() -> new ActorNoTypedLogEvent<DeadLetter>( DeadLetter.class )
+											);
 		
 		final ActorRef actorDeadLetters = system.actorOf( propsReadDeadLetters, "dead-letters" );
 		
@@ -64,9 +68,9 @@ public class DeadLettersTest extends TestBase {
 		
 		__INFO( "And after..." );		
 		
-		___WHEN(" When It's send a 'lastDeadLetter' to check the dead letters");
+		___WHEN(" When It's send a 'lastMessage' to check the dead letters");
 		
-		final Future<Object> future2 = Patterns.ask( actorDeadLetters, "lastDeadLetter" , 3000 );
+		final Future<Object> future2 = Patterns.ask( actorDeadLetters, "lastMessage" , 3000 );
 		
 		Object result2 = Await.result( future2, Duration.create( "1 second") );		
 		
@@ -87,7 +91,7 @@ public class DeadLettersTest extends TestBase {
 										? recipient.path().name()
 												: null;
 									
-		___THEN( "The dead letter message musts be 'bye' "
+		___THEN( "The dead letter message must be 'bye' "
 				+ "(" + message + ") and the actor recipient must be"
 				+ " 'dummy' (" + nameActorRef +")" );
 		
