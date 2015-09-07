@@ -15,7 +15,7 @@ import akka.dispatch.OnComplete;
 import akka.pattern.AskTimeoutException;
 import akka.pattern.Patterns;
 
-import com.logicaalternativa.examples.akka.ActorNoTypedDummyII;
+import com.logicaalternativa.examples.akka.ActorNoTypedDummyCheckLifeCycle;
 import com.logicaalternativa.examples.akka.ActorNoTypedLetItCrash;
 import com.logicaalternativa.examples.akka.ActorNoTypedLogEvent;
 import com.logicaalternativa.examples.akka.testbase.TestBase;
@@ -31,7 +31,7 @@ public class ActorLetItCrashTestEscalate extends TestBase {
 				+ "is escalated but it isn't stopped" );
 		
 
-		final Props propsChild = Props.create( ActorNoTypedDummyII.class );
+		final Props propsChild = Props.create( ActorNoTypedDummyCheckLifeCycle.class );
 		
 		final Props propsReadDeadLetters = Props.create
 												( 	

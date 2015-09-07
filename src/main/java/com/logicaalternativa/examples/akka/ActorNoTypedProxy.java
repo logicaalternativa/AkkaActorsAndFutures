@@ -46,7 +46,7 @@ public class ActorNoTypedProxy extends UntypedActor  {
 				
 				getSender().tell( future, getSelf() );		
 			
-			} else  {
+			} else  if ( "await".equals( arg0 ) ) {
 			
 				logger.info("Execute waiting futur");
 
@@ -56,6 +56,9 @@ public class ActorNoTypedProxy extends UntypedActor  {
 	
 				getSender().tell( res, getSelf() );			
 			
+			} else {
+				
+				unhandled( arg0 );
 			}
 			
 		} else {

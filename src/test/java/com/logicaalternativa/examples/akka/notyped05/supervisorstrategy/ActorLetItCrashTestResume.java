@@ -12,7 +12,7 @@ import akka.actor.Props;
 import akka.dispatch.OnComplete;
 import akka.pattern.Patterns;
 
-import com.logicaalternativa.examples.akka.ActorNoTypedDummyII;
+import com.logicaalternativa.examples.akka.ActorNoTypedDummyCheckLifeCycle;
 import com.logicaalternativa.examples.akka.ActorNoTypedLetItCrash;
 import com.logicaalternativa.examples.akka.testbase.TestBase;
 
@@ -27,7 +27,7 @@ public class ActorLetItCrashTestResume extends TestBase {
 				+ "exception is not propaged and the actor is not restarted" );
 		
 
-		final Props propsChild = Props.create( ActorNoTypedDummyII.class );
+		final Props propsChild = Props.create( ActorNoTypedDummyCheckLifeCycle.class );
 		
 		final Props props = Props.create
 								( 

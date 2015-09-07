@@ -16,7 +16,7 @@ import akka.actor.Props;
 import akka.dispatch.OnComplete;
 import akka.pattern.Patterns;
 
-import com.logicaalternativa.examples.akka.ActorNoTypedDummyII;
+import com.logicaalternativa.examples.akka.ActorNoTypedDummyCheckLifeCycle;
 import com.logicaalternativa.examples.akka.ActorNoTypedLetItCrash;
 import com.logicaalternativa.examples.akka.ActorNoTypedLogEvent;
 import com.logicaalternativa.examples.akka.testbase.TestBase;
@@ -31,7 +31,7 @@ public class ActorLetItCrashTestStop extends TestBase {
 				+ "supervision strategy will be stop if it's crashed the child "
 				+ "actor." );
 		
-		final Props propsChild = Props.create( ActorNoTypedDummyII.class );
+		final Props propsChild = Props.create( ActorNoTypedDummyCheckLifeCycle.class );
 		
 		final Props propsReadDeadLetters = Props.create
 											( 	

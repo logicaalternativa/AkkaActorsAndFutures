@@ -1,4 +1,4 @@
-package com.logicaalternativa.examples.akka;
+package com.logicaalternativa.examples.akka.message;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,11 +7,12 @@ import org.junit.Test;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
-import scala.concurrent.impl.Promise;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.pattern.Patterns;
 
+import com.logicaalternativa.examples.akka.ActorNoTypedDummy;
+import com.logicaalternativa.examples.akka.ActorNoTypedProxy;
 import com.logicaalternativa.examples.akka.testbase.TestBase;
 
 public class ActorProxyTest extends TestBase {
@@ -44,8 +45,6 @@ public class ActorProxyTest extends TestBase {
 		assertEquals( messageSent, messageResponse );	
 
 	}
-
-	
 	
 	@Test	
 	public void testRedirectMessageToChild() throws Exception {
@@ -77,7 +76,6 @@ public class ActorProxyTest extends TestBase {
 
 	}
 	
-	
 	@Test	
 	public void testAwaitFutur() throws Exception {
 		
@@ -95,7 +93,7 @@ public class ActorProxyTest extends TestBase {
 		___WHEN(" It send a message (not 'forward') (Proxy that futurs is been "
 				+ "waiting )");
 		
-		final String messageSent = "Hellosss";
+		final String messageSent = "await";
 		
 		Future<Object> future = Patterns.ask( actorRef, messageSent , 5000 );
 		
@@ -109,7 +107,7 @@ public class ActorProxyTest extends TestBase {
 
 	}
 	
-	
+	@SuppressWarnings("unchecked")
 	@Test	
 	public void testFutur() throws Exception {
 		
@@ -131,9 +129,9 @@ public class ActorProxyTest extends TestBase {
 		
 		Future<Object> future = Patterns.ask( actorRef, messageSent , 5000 );
 		
-		final Promise<Object> promise = (Promise<Object>) Await.result( future, Duration.create( "10 second") );	
+		final Future<Object> futureChild = (Future<Object>) Await.result( future, Duration.create( "10 second") );	
 		
-		final Object messageResponse = Await.result( promise, Duration.create( "10 second") );
+		final Object messageResponse = Await.result( futureChild, Duration.create( "10 second") );
 		
 		
 		___THEN( "The message recibied must be equal to sent message "

@@ -27,7 +27,7 @@ public class DeadLettersTest extends TestBase {
 		
 		___GIVEN( "It's created an actor and a reader deadletters" );
 		
-		final Props props = Props.create( ActorNoTypedDummyII.class );		
+		final Props props = Props.create( ActorNoTypedDummyCheckLifeCycle.class );		
 		
 		final ActorRef actorRef = system.actorOf( props, "dummy");		
 		

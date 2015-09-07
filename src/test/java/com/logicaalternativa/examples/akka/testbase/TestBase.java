@@ -76,9 +76,6 @@ public class TestBase {
 	
 	protected void initResultBoolean(){
 		
-//		ExecutionContextExecutor executor = ExecutionContexts.fromExecutor( Executors.newFixedThreadPool( 1 ) );
-		
-//		resultBoolean = Agent.create( null, executor );
 		resultBoolean = Agent.create( null, ExecutionContexts.global() );
 		
 	}
@@ -90,6 +87,7 @@ public class TestBase {
 			public Boolean apply(Boolean valAgent) {
 				  
 				  if ( ! value ) {
+					
 					  loggerActor.info( this.getClass().getSimpleName() + " value is false ");
 					  
 				  }

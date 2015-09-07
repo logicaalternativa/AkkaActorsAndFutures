@@ -5,13 +5,13 @@ import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
-public class  ActorNoTypedDummyII extends UntypedActor  {
+public class  ActorNoTypedDummyCheckLifeCycle extends UntypedActor  {
 	
 	private String state;
 	
 	protected LoggingAdapter logger = Logging.getLogger( getContext().system(), this );
 	
-	public ActorNoTypedDummyII() {
+	public ActorNoTypedDummyCheckLifeCycle() {
 		
 		super();
 		
@@ -77,8 +77,6 @@ public class  ActorNoTypedDummyII extends UntypedActor  {
 		
 	}
 
-
-
 	@Override
 	public void aroundPreRestart(Throwable reason, Option<Object> message) {
 		
@@ -88,7 +86,6 @@ public class  ActorNoTypedDummyII extends UntypedActor  {
 		
 	}
 
-
 	@Override
 	public void aroundPreStart() {
 		
@@ -96,8 +93,6 @@ public class  ActorNoTypedDummyII extends UntypedActor  {
 		
 		super.aroundPreStart();
 	}
-
-
 
 	@Override
 	public void postStop() throws Exception {
@@ -123,7 +118,6 @@ public class  ActorNoTypedDummyII extends UntypedActor  {
 		super.preRestart( reason, message );
 		
 	}
-	
 	
 	private void logAndConcatState( String concatState, String nameMethod ){
 		

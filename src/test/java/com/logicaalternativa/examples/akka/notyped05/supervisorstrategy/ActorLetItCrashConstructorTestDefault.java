@@ -12,7 +12,7 @@ import akka.actor.Props;
 import akka.dispatch.OnComplete;
 import akka.pattern.Patterns;
 
-import com.logicaalternativa.examples.akka.ActorNoTypedDummyII;
+import com.logicaalternativa.examples.akka.ActorNoTypedDummyCheckLifeCycle;
 import com.logicaalternativa.examples.akka.ActorNoTypedLetItCrash;
 import com.logicaalternativa.examples.akka.ActorNoTypedRuntimeExceptionConstructor;
 import com.logicaalternativa.examples.akka.testbase.TestBase;

@@ -34,8 +34,6 @@ public class ActorNoTypedLetItCrash extends UntypedActor  {
 		
 	}
 	
-	
-
 	@Override
 	public void onReceive( Object message ) throws Exception {
 		
@@ -60,8 +58,6 @@ public class ActorNoTypedLetItCrash extends UntypedActor  {
 		
 	}
 	
-	
-	
 	@Override
 	public void postStop() throws Exception {
 		
@@ -69,8 +65,6 @@ public class ActorNoTypedLetItCrash extends UntypedActor  {
 		
 		super.postStop();
 	}
-
-
 
 	@Override
 	public SupervisorStrategy supervisorStrategy() {
@@ -88,7 +82,6 @@ public class ActorNoTypedLetItCrash extends UntypedActor  {
 					new FunctionStrategy( )
 				 );
 	}
-	
 	
 	private class FunctionStrategy implements Function<Throwable, SupervisorStrategy.Directive> {
 		
@@ -117,6 +110,4 @@ public class ActorNoTypedLetItCrash extends UntypedActor  {
 		}
 	}
 	
-	
-
 }

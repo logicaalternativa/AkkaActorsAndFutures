@@ -1,4 +1,4 @@
-package com.logicaalternativa.examples.akka;
+package com.logicaalternativa.examples.akka.queue;
 
 import static org.junit.Assert.assertEquals;
 
@@ -20,6 +20,7 @@ import akka.dispatch.OnComplete;
 import akka.pattern.Patterns;
 import akka.routing.RoundRobinPool;
 
+import com.logicaalternativa.examples.akka.ActorNoTypedWhoIam;
 import com.logicaalternativa.examples.akka.testbase.TestBase;
 
 public class ActorQueueRouteRoundRobinTest extends TestBase {
@@ -35,6 +36,7 @@ public class ActorQueueRouteRoundRobinTest extends TestBase {
 		
 		long now = System.currentTimeMillis();
 		
+		
 		___GIVEN( "It's created an router actor with " + numberActors + " rotee" );
 		
 		final Props routeeProps = Props.create( ActorNoTypedWhoIam.class );
@@ -44,6 +46,7 @@ public class ActorQueueRouteRoundRobinTest extends TestBase {
 		final Props propRouter = roundRobinPool.props( routeeProps );
 		
 		final ActorRef actorRef = system.actorOf( propRouter, "router");
+		
 		
 		___WHEN(" It is sent a " + numberMessages +  " messages ");
 		
@@ -88,7 +91,7 @@ public class ActorQueueRouteRoundRobinTest extends TestBase {
 		
 		
 		Boolean resultBoolean = getResultBoolean();
-		
+				
 		__INFO("... and then, it is going to check all the futur result (" + resultBoolean + ")");
 		
 		assertEquals( true, resultBoolean );
@@ -97,6 +100,7 @@ public class ActorQueueRouteRoundRobinTest extends TestBase {
 		__INFO("... and finally, it is checked the values of the list");
 		
 		Map<String, List<String>> mapRequest = resultRequest.get();
+		
 		
 		___THEN("Actor number (" + numberActors + ") have to be the same "
 				+ "that the count of keys that each has (" + messageForActor + ") messages ");
@@ -108,6 +112,13 @@ public class ActorQueueRouteRoundRobinTest extends TestBase {
 		
 	}
 	
+	/**
+	 * Request actor data filter. It returns and stream with all  map keys that
+	 * every one has the same number that messages sent to an actor
+	 * @param messageForActor
+	 * @param mapRequest
+	 * @return
+	 */
 	protected Stream<Integer> getFilterMessageForActor(int messageForActor, Map<String, List<String>> mapRequest) {
 		
 		__INFO("This is information of messages sent to the actors");
@@ -148,7 +159,7 @@ public class ActorQueueRouteRoundRobinTest extends TestBase {
 						
 				final String message = opResponse
 										 .map( r -> r.get("message") )
-										 .orElse( null );		
+										 .orElse( null );
 				list.add( message );
 				valAgent.put( key.get(), list );
 				

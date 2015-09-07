@@ -109,7 +109,7 @@ public class TypedActorDummyImpTest extends TestBaseTypedActor {
 				+ "is executed in a another thread "
 				+ "(miliSec: "+ miliSec +", time: " + time + " )");
 		
-		assertTrue( miliSec >  time );
+		assertTrue( time < miliSec );
 		
 	}
 
