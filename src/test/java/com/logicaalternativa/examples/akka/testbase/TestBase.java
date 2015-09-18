@@ -84,6 +84,7 @@ public class TestBase {
 		
 		resultBoolean.send(new Mapper<Boolean, Boolean>() {
 			  
+			@Override
 			public Boolean apply(Boolean valAgent) {
 				  
 				  if ( ! value ) {
@@ -126,27 +127,85 @@ public class TestBase {
 		
 	protected void ___GIVEN(String text) {
 		
-		log( "___ GIVEN : " + text );		
+		log( indentText(" _ GIVEN", text ) );
 		
 	}	
 	
 	protected void ___WHEN(String text) {
 		
-		log( "___  WHEN : " + text );
+		log( indentText(" __ WHEN: ", text ) );
 		
 	}
 	
 
 	protected void ___THEN( String text) {
 		
-		log( "___   THEN : " + text );
+		log( indentText(" ___ THEN: ", text ) );
 		 
 	}
 	
 	protected void __INFO( String text) {
 		
-		log( "__      INFO : " + text );
+		log( "\n      INFO : " + text );
 		
+	}
+	
+	protected String indentText( String typeTraze, String text ) {
+		
+		final String ident = "\n\t";
+		final StringBuilder res = new StringBuilder( "\n" );
+		
+		res.append( ident )
+		    .append( typeTraze )
+		    .append( ident )
+		    .append( ident );
+		
+		String[] splitReturnline = text.split("[\\n\\r]");
+		
+		for (String line : splitReturnline) {
+			
+			final String[] words = line.split("[ ]");
+			
+			StringBuilder lineIdent = indentLine( res, words, ident);
+			
+			res.append( lineIdent ).append( ident );
+		}
+		
+		res.append( "\n"  );
+		
+		return res.toString();		
+		
+	}
+
+	private StringBuilder indentLine(
+			final StringBuilder res, final String[] words, final String ident) {
+		
+		StringBuilder lineIdent = new StringBuilder();
+		
+		for (String word : words) {
+			
+			if ( lineIdent.length() + word.length() < 80 ) {
+				
+				if ( lineIdent.length() > 0) {
+					
+					lineIdent.append(" ");
+					
+				}
+					
+				lineIdent.append( word );
+				
+			} else {
+				
+				res.append( lineIdent ).append(ident );
+				
+				lineIdent = new StringBuilder();
+				
+				lineIdent.append( word );
+			}
+			
+		}
+		
+		return lineIdent;
 	}
 	
 

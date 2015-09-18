@@ -22,11 +22,15 @@ public class ActorNoTypedLetItCrash extends UntypedActor  {
 	
 	boolean isActorChildAlive;
 	
+	boolean isRestarted;
+	
 	public ActorNoTypedLetItCrash( Props propsChild, String typeStrategy ) {
 		
 		actorChild = getContext().actorOf( propsChild, "child" );
 		
 		isActorChildAlive = true;
+		
+		isRestarted = false;
 		
 		getContext().watch( actorChild ); // It is monitored if the actorChild died		
 		
@@ -44,7 +48,11 @@ public class ActorNoTypedLetItCrash extends UntypedActor  {
 			
 			isActorChildAlive = false;			
 			
-		}  else if ( isActorChildAlive ) {
+		}  else if ( isRestarted ) {
+			
+			sender().tell("I'm restarted", self() );
+			
+		} else if ( isActorChildAlive ) {
 			
 			actorChild.forward( message, getContext() );
 			
@@ -54,10 +62,20 @@ public class ActorNoTypedLetItCrash extends UntypedActor  {
 			
 		}
 		
-		
-		
 	}
 	
+	
+	
+	@Override
+	public void aroundPostRestart(Throwable reason) {
+		
+		logger.error( reason, "Restarted actor");
+		
+		isRestarted = true;
+		
+		super.aroundPostRestart(reason);
+	}
+
 	@Override
 	public void postStop() throws Exception {
 		
@@ -87,6 +105,8 @@ public class ActorNoTypedLetItCrash extends UntypedActor  {
 		
 		@Override
 		public Directive apply(Throwable exception) throws Exception {
+			
+			logger.error(exception, "exception on Function Stategy");
 			
 			if ( exception instanceof Exception ) {
 				

@@ -2,6 +2,8 @@ package com.logicaalternativa.examples.akka;
 
 import scala.Option;
 import akka.actor.UntypedActor;
+import akka.agent.Agent;
+import akka.dispatch.Mapper;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
@@ -11,16 +13,31 @@ public class  ActorNoTypedDummyCheckLifeCycle extends UntypedActor  {
 	
 	protected LoggingAdapter logger = Logging.getLogger( getContext().system(), this );
 	
+	private Agent<String> logAllCycleLife;
+	
 	public ActorNoTypedDummyCheckLifeCycle() {
 		
-		super();
-		
-		logger.info("From " + getClass().getSimpleName() + " ****** Constructor ***");
-		
-		logAndConcatState( "INI", "constructor" );
+		initState();
 	
 	}
 	
+	public ActorNoTypedDummyCheckLifeCycle(Agent<String> logAllCycleLife) {
+		
+		this.logAllCycleLife = logAllCycleLife;
+		
+		initState();
+		
+	}
+	
+	private void initState() {
+		
+		logger.info("From " + getClass().getSimpleName() + " ****** Constructor ***");
+		
+		logAndConcatState( "CONSTRUCTOR", "constructor" );
+		
+	}
+	
+
 	@Override
 	public void onReceive(Object arg0) throws Exception {
 		
@@ -36,7 +53,7 @@ public class  ActorNoTypedDummyCheckLifeCycle extends UntypedActor  {
 			
 			logger.info("From " + getClass().getSimpleName() + "  throw exception" + ( (Exception) arg0 ).getMessage() );
 			
-			logAndConcatState( "EXCEPTION", "onReceive" );
+			logAndConcatState( "[[EXCEPTION]]", "onReceive" );
 			
 			getSender().tell( "I'm going to pass away", getSelf() );
 			
@@ -51,14 +68,13 @@ public class  ActorNoTypedDummyCheckLifeCycle extends UntypedActor  {
 	}
 	
 	@Override
-	public void aroundPostStop() {
+	public void aroundPreStart() {
 		
-		logAndConcatState( "AROUND_POST_STOP", "aroundPostStop" );	
+		logAndConcatState( "AROUND_PRE_START", "aroundPreStart" );
 		
-		super.aroundPostStop();
-		
+		super.aroundPreStart();
 	}
-
+	
 	@Override
 	public void preStart() throws Exception {
 		
@@ -68,15 +84,7 @@ public class  ActorNoTypedDummyCheckLifeCycle extends UntypedActor  {
 		
 	}
 	
-	@Override
-	public void aroundPostRestart(Throwable reason) {
-		
-		logAndConcatState( "AROUND_POST_RESTART", "aroundPostRestart" );	
-		
-		super.aroundPostRestart( reason );
-		
-	}
-
+	
 	@Override
 	public void aroundPreRestart(Throwable reason, Option<Object> message) {
 		
@@ -84,30 +92,6 @@ public class  ActorNoTypedDummyCheckLifeCycle extends UntypedActor  {
 				
 		super.aroundPreRestart( reason, message );
 		
-	}
-
-	@Override
-	public void aroundPreStart() {
-		
-		logAndConcatState( "AROUND_PRE_START", "aroundPreStart" );
-		
-		super.aroundPreStart();
-	}
-
-	@Override
-	public void postStop() throws Exception {
-		
-		logAndConcatState( "POST_STOP", "postStop" );
-		
-		super.postStop();
-	}
-
-	@Override
-	public void postRestart(Throwable reason) throws Exception {
-		
-		logAndConcatState( "POST_RESTART", "postRestart" );
-		
-		super.postRestart(reason);
 	}
 
 	@Override
@@ -119,6 +103,41 @@ public class  ActorNoTypedDummyCheckLifeCycle extends UntypedActor  {
 		
 	}
 	
+	@Override
+	public void postRestart(Throwable reason) throws Exception {
+		
+		logAndConcatState( "POST_RESTART", "postRestart" );
+		
+		super.postRestart(reason);
+	}
+	
+	@Override
+	public void aroundPostRestart(Throwable reason) {
+		
+		logAndConcatState( "AROUND_POST_RESTART", "aroundPostRestart" );	
+		
+		super.aroundPostRestart( reason );
+		
+	}
+	
+	@Override
+	public void aroundPostStop() {
+		
+		logAndConcatState( "AROUND_POST_STOP", "aroundPostStop" );	
+		
+		super.aroundPostStop();
+		
+	}
+
+	@Override
+	public void postStop() throws Exception {
+		
+		logAndConcatState( "POST_STOP", "postStop" );
+		
+		super.postStop();
+	}
+
+	
 	private void logAndConcatState( String concatState, String nameMethod ){
 		
 		state = ( state == null) 
@@ -126,6 +145,35 @@ public class  ActorNoTypedDummyCheckLifeCycle extends UntypedActor  {
 						state.concat(" => ").concat( concatState );
 		
 		logger.info("From " + getClass().getSimpleName() + " calling " + nameMethod + " method. It's added log value: " + concatState  );
+		
+		logAgent(logAllCycleLife, concatState);
+		
+	}
+	
+	private void logAgent( final Agent<String> logAllCycleLife, String concatState ){
+		
+		if ( logAllCycleLife == null ) {
+			
+			return;
+			
+		}
+		
+		logAllCycleLife.send(new Mapper<String, String>() {
+			
+			@Override
+			public String apply(String valAgent) {
+				
+				String res = (valAgent !=  null && !"".equals( valAgent.trim() ) 
+									? valAgent.concat(" >> ") : 
+										"" )
+							.concat( concatState );
+				
+//				logger.info("From " + getClass().getSimpleName() + " state log .....  ".concat(res) );
+				
+				return res;
+				
+			}
+		});
 		
 	}
 	

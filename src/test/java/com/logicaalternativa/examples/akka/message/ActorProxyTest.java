@@ -112,7 +112,7 @@ public class ActorProxyTest extends TestBase {
 	public void testFutur() throws Exception {
 		
 		___GIVEN( "It creates a proxy actor. It is added whith configuration "
-				+ "proxied actor. The proxy will redirect the messge to "
+				+ "proxied actor. The proxy will redirect the message to "
 				+ "proxied actor" );
 		
 		final Props propsChild = Props.create( ActorNoTypedDummy.class );
