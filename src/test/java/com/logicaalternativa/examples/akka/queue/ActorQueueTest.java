@@ -63,7 +63,7 @@ public class ActorQueueTest extends TestBase {
 				public void onComplete(Throwable arg0, Object messageResponse )
 						throws Throwable {
 					
-					___THEN( "The menssage recibied must be equal to message sent (" + messageResponse + ", " + messageSent + ")" );
+					___THEN( "The menssage received must be equal to message sent (" + messageResponse + ", " + messageSent + ")" );
 					
 					 addResultAndValue( messageSent.equals( messageResponse ) );
 					

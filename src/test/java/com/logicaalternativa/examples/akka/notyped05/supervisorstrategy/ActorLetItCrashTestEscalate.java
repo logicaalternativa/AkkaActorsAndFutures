@@ -33,8 +33,9 @@ public class ActorLetItCrashTestEscalate extends TestBase {
 		
 		___GIVEN( "It creates a proxy actor (ActorNoTypedLetItCrash). It is "
 				+ "added with configuration proxied actor. In this case the "
-				+ "supervision strategy is default. If child actor is crashed, error"
-				+ "will be escalated but it will not stopped" );
+				+ "supervision strategy is 'escalate'. If child actor is "
+				+ "crashed, it  will escalate the erro. The next step will "
+				+ "depend on supervisor strategy" );
 		
 
 		Agent<String> logAllCycleLife = Agent.create( "", ExecutionContexts.global() );
@@ -75,7 +76,7 @@ public class ActorLetItCrashTestEscalate extends TestBase {
 			@Override
 			public void onComplete(Throwable exception, Object arg1) throws Throwable {
 				
-				___THEN( "[1] The message recibied must be equal to:\n "
+				___THEN( "[1] The message received must be equal to:\n "
 						+ "CONSTRUCTOR => AROUND_PRE_START => PRE_START "
 						+ "(" + arg1 + ")" );
 				
@@ -102,7 +103,7 @@ public class ActorLetItCrashTestEscalate extends TestBase {
 			@Override
 			public void onComplete(Throwable exception, Object arg1) throws Throwable {
 				
-				___THEN( "[2] The exception must be null and message has to be equals:\n"
+				___THEN( "[2] The exception must be null and message has to math:\n"
 						+ "'I'm going to pass away'\n"
 						+ " (exception: " + exception + ", message: "+ arg1 +")" );
 				
@@ -198,7 +199,7 @@ public class ActorLetItCrashTestEscalate extends TestBase {
 		
 		final Object result5 = Await.result( future5, Duration.create( "1 second") );
 		
-		___THEN( "[5] The message recibied must be equal a 'I'm restarted' "
+		___THEN( "[5] The message received must be equal a 'I'm restarted' "
 				+ "(" + result5 + ") ");
 		
 		assertEquals( "I'm restarted", result5 );	
@@ -212,11 +213,9 @@ public class ActorLetItCrashTestEscalate extends TestBase {
 		
 		Thread.sleep( 1200 );	
 		
-		
 		___WHEN("[6] It's checked all child actor cycle life");
 		
-		
-		String resAllStateCycleLife = logAllCycleLife.get();
+		final String resAllStateCycleLife = logAllCycleLife.get();
 		
 		___THEN( "[6] The child actor it's started two times because its supervisor "
 				+ "is restarted [the exception is scalated]. The all life cycle "
@@ -246,7 +245,7 @@ public class ActorLetItCrashTestEscalate extends TestBase {
 					         + " >> POST_STOP", resAllStateCycleLife );
 		
 		
-		Boolean resultBoolean = getResultBoolean();
+		final Boolean resultBoolean = getResultBoolean();
 		
 		
 		__INFO("... and finally, it's going to check all the futur results (" + resultBoolean + ")");

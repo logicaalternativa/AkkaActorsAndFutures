@@ -57,7 +57,7 @@ public class ActorLetItCrashConstructorTestDefault extends TestBase {
 			@Override
 			public void onComplete(Throwable exception, Object arg1) throws Throwable {
 				
-				___THEN( "The exception must be null and message has to be equals "
+				___THEN( "The exception must be null and message has to math "
 				+ "'Actor child passed away'"
 				+ " (exception: " + exception + ", message: "+ arg1 +")" );
 		

@@ -74,7 +74,7 @@ public class ActorQueueRouteRoundRobinTest extends TestBase {
 					
 					loadValueAgentRequest( resultRequest, response );
 					
-					___THEN( "The message recibied must be equal to message sent (" + messageResponse + ", " + orderSent + ")" );
+					___THEN( "The message received must be equal to message sent (" + messageResponse + ", " + orderSent + ")" );
 					
 					addResultAndValue( orderSent.equals( response.get( "message" ) ) );
 					

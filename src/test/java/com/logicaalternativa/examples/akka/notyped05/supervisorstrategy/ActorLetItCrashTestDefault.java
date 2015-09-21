@@ -59,7 +59,7 @@ public class ActorLetItCrashTestDefault extends TestBase {
 			@Override
 			public void onComplete(Throwable exception, Object arg1) throws Throwable {
 				
-				___THEN( "[1] The message recibied must be equal to: \n "
+				___THEN( "[1] The message received must be equal to: \n "
 						+ "CONSTRUCTOR => AROUND_PRE_START => PRE_START\n "
 						+ "(" + arg1 + ")" );
 				
@@ -86,7 +86,7 @@ public class ActorLetItCrashTestDefault extends TestBase {
 			@Override
 			public void onComplete(Throwable exception, Object arg1) throws Throwable {
 				
-				___THEN( "[2] The exception must be null and message has to be equals "
+				___THEN( "[2] The exception must be null and message has to math "
 						+ "'I'm going to pass away'"
 						+ " (exception: " + exception + ", message: "+ arg1 +")" );
 				
@@ -107,7 +107,7 @@ public class ActorLetItCrashTestDefault extends TestBase {
 		
 		final Object result3 = Await.result( future3, Duration.create( "3 second") );
 		
-		___THEN( "[3] The message recibied must be equal to \n"
+		___THEN( "[3] The message received must be equal to \n"
 				+ "CONSTRUCTOR => AROUND_POST_RESTART => POST_RESTART => PRE_START \n"
 				+ "(" + result3 + ") ");
 		
@@ -125,7 +125,7 @@ public class ActorLetItCrashTestDefault extends TestBase {
 		
 		___WHEN("[4] It's checked all child actor cycle life");
 		
-		String resAllStateCycleLife = logAllCycleLife.get();
+		final String resAllStateCycleLife = logAllCycleLife.get();
 		
 		___THEN( "[4] The all life cycle has to be: \n"
 				+ "CONSTRUCTOR"
@@ -159,7 +159,7 @@ public class ActorLetItCrashTestDefault extends TestBase {
 		
 		
 		
-		Boolean resultBoolean = getResultBoolean();
+		final Boolean resultBoolean = getResultBoolean();
 		
 		__INFO("... and finally, it's going to check all the futur results (" + resultBoolean + ")");
 		

@@ -40,7 +40,7 @@ public class ActorProxyTest extends TestBase {
 		final Object messageResponse = Await.result( future, Duration.create( "10 second") );		
 		
 		
-		___THEN( "The message recibied must be equal to sent message (" + messageResponse + ", " + messageSent + ")" );
+		___THEN( "The message received must be equal to sent message (" + messageResponse + ", " + messageSent + ")" );
 		
 		assertEquals( messageSent, messageResponse );	
 
@@ -70,7 +70,7 @@ public class ActorProxyTest extends TestBase {
 		final Object messageResponse = Await.result( future, Duration.create( "10 second") );		
 		
 		
-		___THEN( "The message recibied must be equal to sent message (" + messageResponse + ", " + messageSent + ")" );
+		___THEN( "The message received must be equal to sent message (" + messageResponse + ", " + messageSent + ")" );
 		
 		assertEquals( messageSent, messageResponse );	
 
@@ -100,7 +100,7 @@ public class ActorProxyTest extends TestBase {
 		final Object messageResponse = Await.result( future, Duration.create( "10 second") );
 		
 		
-		___THEN( "The message recibied must be equal to sent message "
+		___THEN( "The message received must be equal to sent message "
 				+ "(" + messageResponse + ", " + messageSent + ")" );
 		
 		assertEquals( messageSent, messageResponse );			
@@ -134,7 +134,7 @@ public class ActorProxyTest extends TestBase {
 		final Object messageResponse = Await.result( futureChild, Duration.create( "10 second") );
 		
 		
-		___THEN( "The message recibied must be equal to sent message "
+		___THEN( "The message received must be equal to sent message "
 				+ "(" + messageResponse + ", " + messageSent + ")" );
 		
 		assertEquals( messageSent, messageResponse );	

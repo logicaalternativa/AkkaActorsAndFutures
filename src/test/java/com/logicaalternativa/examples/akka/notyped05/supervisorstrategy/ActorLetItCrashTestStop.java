@@ -67,7 +67,7 @@ public class ActorLetItCrashTestStop extends TestBase {
 			@Override
 			public void onComplete(Throwable exception, Object arg1) throws Throwable {
 				
-				___THEN( "The message recibied must be equal a "
+				___THEN( "The message received must be equal a "
 						+ "INI => AROUND_PRE_START => PRE_START "
 						+ "(" + arg1 + ")" );
 				
@@ -179,7 +179,7 @@ public class ActorLetItCrashTestStop extends TestBase {
 		
 		final Object result5 = Await.result( future5, Duration.create( "1 second") );
 		
-		___THEN( "The message recibied must be equal a 'Actor child passed away' "
+		___THEN( "The message received must be equal a 'Actor child passed away' "
 				+ "(" + result5 + ") ");
 		
 		assertEquals( "Actor child passed away", result5 );	

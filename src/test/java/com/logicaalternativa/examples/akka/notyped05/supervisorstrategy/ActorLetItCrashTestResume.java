@@ -8,7 +8,10 @@ import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 import akka.actor.ActorRef;
+import akka.actor.PoisonPill;
 import akka.actor.Props;
+import akka.agent.Agent;
+import akka.dispatch.ExecutionContexts;
 import akka.dispatch.OnComplete;
 import akka.pattern.Patterns;
 
@@ -21,13 +24,17 @@ public class ActorLetItCrashTestResume extends TestBase {
 	@Test	
 	public void test() throws Exception {
 		
-		___GIVEN( "It creates a proxy actor (ActorNoTypedLetItCrash) . It is "
+		___GIVEN( "It creates a proxy actor (ActorNoTypedLetItCrash). It is "
 				+ "added with configuration proxied actor. In this case "
-				+ "supervision strategy is 'resume'. If child actor crashes, the"
-				+ "exception is not propaged and the actor is not restarted" );
+				+ "supervision strategy is 'resume'. If child actor is crashed, "
+				+ "the exception is not propaged and the actor is not "
+				+ "restarted" );
 		
 
-		final Props propsChild = Props.create( ActorNoTypedDummyCheckLifeCycle.class );
+		final Agent<String> logAllCycleLife = Agent.create( "", ExecutionContexts.global() );
+		
+		final Props propsChild = Props.create( ActorNoTypedDummyCheckLifeCycle.class
+				, () -> new ActorNoTypedDummyCheckLifeCycle( logAllCycleLife )  );
 		
 		final Props props = Props.create
 								( 
@@ -44,9 +51,7 @@ public class ActorLetItCrashTestResume extends TestBase {
 		initResultBoolean();
 		
 		
-		__INFO( "**************************************************************" );
-		
-		___WHEN(" It send a message state");
+		___WHEN("[1] It send a message state");
 		
 		final Future<Object> future1 = Patterns.ask( actorRef, "state" , 1000 );
 		
@@ -55,24 +60,22 @@ public class ActorLetItCrashTestResume extends TestBase {
 			@Override
 			public void onComplete(Throwable exception, Object arg1) throws Throwable {
 				
-				___THEN( "The message recibied must be equal a "
-						+ "INI => AROUND_PRE_START => PRE_START "
+				___THEN( "[1] The message received must be equal to:\n"
+						+ "CONSTRUCTOR => AROUND_PRE_START => PRE_START\n "
 						+ "(" + arg1 + ")" );
 				
 				addResultAndValue( exception == null );
 				
-				addResultAndValue( "INI => AROUND_PRE_START => PRE_START".equals(arg1)  );
+				addResultAndValue( "CONSTRUCTOR => AROUND_PRE_START => PRE_START".equals(arg1)  );
 				
 			}
 			
 		}, system.dispatcher() );
 		
 		
-		__INFO( "**************************************************************" );
-		
 		__INFO( "And after..." );
 		
-		___WHEN(" It send a message Exception that causes a exception in "
+		___WHEN("[2] It send a message Exception that causes a exception in "
 				+ "child actor");
 		
 		final Exception exceptionSent = new Exception( "Exception test" );
@@ -84,8 +87,8 @@ public class ActorLetItCrashTestResume extends TestBase {
 			@Override
 			public void onComplete(Throwable exception, Object arg1) throws Throwable {
 				
-				___THEN( "The exception must be null and message has to be equals "
-						+ "'I'm going to pass away'"
+				___THEN( "[2] The exception must be null and message have to match "
+						+ "'I'm going to pass away'\n"
 						+ " (exception: " + exception + ", message: "+ arg1 +")" );
 				
 				addResultAndValue( exception == null );
@@ -97,32 +100,51 @@ public class ActorLetItCrashTestResume extends TestBase {
 		}, system.dispatcher() );
 		
 		
-		__INFO( "**************************************************************" );
-		
 		__INFO( "And after..." );		
 		
-		___WHEN(" It send a message state");
+		___WHEN("[3] It send a message state");
 		
 		final Future<Object> future3 = Patterns.ask( actorRef, "state" , 1000 );
 		
 		final Object result3 = Await.result( future3, Duration.create( "3 second") );
 		
-		___THEN( "The message recibied must be equal a "
-				+ "INI => AROUND_PRE_START => PRE_START => EXCEPTION "
+		___THEN( "[3] The message received must be equal to:\n "
+				+ "CONSTRUCTOR => AROUND_PRE_START => PRE_START => [[EXCEPTION]] "
 				+ "(" + result3 + ") ");
 		
-		assertEquals( "INI => AROUND_PRE_START => PRE_START => EXCEPTION", result3 );
+		assertEquals( "CONSTRUCTOR => AROUND_PRE_START => PRE_START => [[EXCEPTION]]", result3 );
 		
+		__INFO( "To check all life cycle, It's killed the actor ref. This kills "
+				+ "the child actor too" );
 		
-		
-		__INFO( "**************************************************************" );
+		actorRef.tell(PoisonPill.getInstance(), ActorRef.noSender());
 		
 		__INFO( "It's only for waiting the result of agent" );
 		
 		Thread.sleep( 1000 );
 		
-		Boolean resultBoolean = getResultBoolean();
+		___WHEN("[4] It's checked all child actor cycle life");
 		
+		final String resAllStateCycleLife = logAllCycleLife.get();
+		
+		___THEN( "[4] When the exception is throwed, the child actor is not "
+				+ "stoped. The cycle life has to be: \n"
+				+ "CONSTRUCTOR" 
+					+ " >> AROUND_PRE_START"
+					 + " >> PRE_START"
+					  + " >> [[EXCEPTION]]"
+					   + " >> AROUND_POST_STOP"
+					    + " >> POST_STOP \n(" + resAllStateCycleLife + ")"  );
+		
+		assertEquals( "CONSTRUCTOR"
+					+ " >> AROUND_PRE_START"
+					 + " >> PRE_START"
+					  + " >> [[EXCEPTION]]"
+					   + " >> AROUND_POST_STOP"
+					    + " >> POST_STOP", resAllStateCycleLife );
+		
+		
+		final Boolean resultBoolean = getResultBoolean();
 		
 		__INFO("... and finally, it's going to check all the futur results (" + resultBoolean + ")");
 		
