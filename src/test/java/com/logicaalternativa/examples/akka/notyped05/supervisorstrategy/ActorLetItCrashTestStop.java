@@ -13,6 +13,8 @@ import scala.concurrent.duration.Duration;
 import akka.actor.ActorRef;
 import akka.actor.DeadLetter;
 import akka.actor.Props;
+import akka.agent.Agent;
+import akka.dispatch.ExecutionContexts;
 import akka.dispatch.OnComplete;
 import akka.pattern.Patterns;
 
@@ -28,10 +30,14 @@ public class ActorLetItCrashTestStop extends TestBase {
 		
 		___GIVEN( "It creates a proxy actor (ActorNoTypedLetItCrash) . It is "
 				+ "added with configuration proxied actor. In this case the "
-				+ "supervision strategy will be stop if it's crashed the child "
-				+ "actor." );
+				+ "supervision strategy will be stop the child actor if it's "
+				+ "crashed." );
 		
-		final Props propsChild = Props.create( ActorNoTypedDummyCheckLifeCycle.class );
+		final Agent<String> logAllCycleLife = Agent.create( "", ExecutionContexts.global() );
+		
+		final Props propsChild = Props.create( ActorNoTypedDummyCheckLifeCycle.class
+				, () -> new ActorNoTypedDummyCheckLifeCycle( logAllCycleLife )  );
+		
 		
 		final Props propsReadDeadLetters = Props.create
 											( 	
@@ -56,9 +62,7 @@ public class ActorLetItCrashTestStop extends TestBase {
 		initResultBoolean();
 		
 		
-		__INFO( "**************************************************************" );
-		
-		___WHEN(" It send a message state");
+		___WHEN("[1] It send a message state");
 		
 		final Future<Object> future1 = Patterns.ask( actorRef, "state" , 1000 );
 		
@@ -67,24 +71,22 @@ public class ActorLetItCrashTestStop extends TestBase {
 			@Override
 			public void onComplete(Throwable exception, Object arg1) throws Throwable {
 				
-				___THEN( "The message received must be equal a "
-						+ "INI => AROUND_PRE_START => PRE_START "
+				___THEN( "[1] The message received must be equal to:\n "
+						+ "INI => AROUND_PRE_START => PRE_START\n"
 						+ "(" + arg1 + ")" );
 				
 				addResultAndValue( exception == null );
 				
-				addResultAndValue( "INI => AROUND_PRE_START => PRE_START".equals(arg1)  );
+				addResultAndValue( "CONSTRUCTOR => AROUND_PRE_START => PRE_START".equals(arg1)  );
 				
 			}
 			
 		}, system.dispatcher() );		
 		
 		
-		__INFO( "**************************************************************" );
-		
 		__INFO( "And after..." );
 		
-		___WHEN(" It send a message Exception that causes a exception in "
+		___WHEN(" [2] It send a message Exception that causes a exception in "
 				+ "child actor");
 		
 		final Exception exceptionSent = new Exception( "Exception test" );
@@ -93,17 +95,15 @@ public class ActorLetItCrashTestStop extends TestBase {
 		
 		final Object result2 = Await.result( future2, Duration.create( "1 second") );
 		
-		___THEN( "The menssage has to be 'I'm going to pass away' "
+		___THEN( "[2] The menssage has to be 'I'm going to pass away'\n "
 				+ "(" + result2 +") ");
 		
 		assertEquals( "I'm going to pass away", result2 );
 		
 		
-		__INFO( "**************************************************************" );
-		
 		__INFO( "And after..." );		
 		
-		___WHEN(" It send a message 'state' again");
+		___WHEN("[3] It send a message 'state' again");
 		
 		final Future<Object> future3 = Patterns.ask( actorRef, "state" , 3000 );
 		
@@ -115,19 +115,37 @@ public class ActorLetItCrashTestStop extends TestBase {
 			
 		} catch( Exception e ) {
 			
-			___THEN( "The menssage is loosed The exception must be 'TimeoutException' "
+			___THEN( " [3] The menssage is loosed The exception must be 'TimeoutException'\n "
 					+ "(" + e.getClass().getSimpleName() + ")");
 			
 			assertEquals( e.getClass().getSimpleName(), TimeoutException.class.getSimpleName() );			
 			
 		}
 		
+		___WHEN("[4] It's checked all child actor cycle life. In this case, "
+				+ "killing the actor it's not necessary");
 		
-		__INFO( "**************************************************************" );
+		final String resAllStateCycleLife = Await.result(logAllCycleLife.future(), Duration.create( "300 sec" ) );
+				
+		___THEN( "[4] When the exception is throwed, the child actor is not "
+				+ "stoped and i's is not restarted. The cycle life has to be:\n"
+				+ "CONSTRUCTOR" 
+					+ " >> AROUND_PRE_START"
+					 + " >> PRE_START"
+					  + " >> [[EXCEPTION]]"
+					   + " >> AROUND_POST_STOP"
+					    + " >> POST_STOP \n(" + resAllStateCycleLife + ")"  );
+		
+		assertEquals( "CONSTRUCTOR"
+					+ " >> AROUND_PRE_START"
+					 + " >> PRE_START"
+					  + " >> [[EXCEPTION]]"
+					   + " >> AROUND_POST_STOP"
+					    + " >> POST_STOP", resAllStateCycleLife );
 		
 		__INFO( "And after..." );		
 		
-		___WHEN(" When It's send a 'lastMessage' to check the dead letters");
+		___WHEN("[5] When It's send a 'lastMessage' to check the dead letters");
 		
 		final Future<Object> future4 = Patterns.ask( actorDeadLetters, "lastMessage" , 3000 );
 		
@@ -153,7 +171,7 @@ public class ActorLetItCrashTestStop extends TestBase {
 												? recipient.path().name()
 														: null;
 											
-				___THEN( "The dead letter message musts be 'state' "
+				___THEN( "[5] The dead letter message musts be 'state' "
 						+ "(" + message + ") and the actor recipient must be"
 						+ " 'child' (" + nameActorRef +")" );
 				
@@ -167,29 +185,20 @@ public class ActorLetItCrashTestStop extends TestBase {
 			
 		}, system.dispatcher() );
 		
-		
-		
-		__INFO( "**************************************************************" );
-		
 		__INFO( "And after..." );		
 		
-		___WHEN(" if send a message 'state' again");
+		___WHEN("[6] if send a message 'state' again");
 		
 		final Future<Object> future5 = Patterns.ask( actorRef, "state" , 1000 );
 		
 		final Object result5 = Await.result( future5, Duration.create( "1 second") );
 		
-		___THEN( "The message received must be equal a 'Actor child passed away' "
+		___THEN( "[6] The message received must be equal a 'Actor child passed "
+				+ "away'\n"
 				+ "(" + result5 + ") ");
 		
-		assertEquals( "Actor child passed away", result5 );	
-	
+		assertEquals( "Actor child passed away", result5 );		
 		
-		__INFO( "**************************************************************" );
-		
-		__INFO( "It's only for waiting the result of agent" );
-		
-		Thread.sleep( 1000 );
 		
 		Boolean resultBoolean = getResultBoolean();
 		

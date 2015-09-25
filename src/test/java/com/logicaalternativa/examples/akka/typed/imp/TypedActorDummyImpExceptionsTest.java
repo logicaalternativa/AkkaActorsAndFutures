@@ -100,7 +100,7 @@ public class TypedActorDummyImpExceptionsTest extends TestBaseTypedActor {
 	
 	@SuppressWarnings("rawtypes")
 	@Test
-	public void testRuntimeExceptionFuture2() throws InterruptedException {
+	public void testRuntimeExceptionFuture2() throws Exception {
 		
 		___GIVEN( "A typed actor (TypedActorDummy) is loaded in a System Actor " );
 		
@@ -130,7 +130,7 @@ public class TypedActorDummyImpExceptionsTest extends TestBaseTypedActor {
 		
 		__INFO( "It's only for waiting the result of agent" );
 		
-		Thread.sleep( 1000 );
+		Thread.sleep( 200 );
 		
 		__INFO("... And finally it is checked the future result");
 		

@@ -209,13 +209,13 @@ public class ActorLetItCrashTestEscalate extends TestBase {
 		
 		actorRef.tell(PoisonPill.getInstance(), ActorRef.noSender());
 		
-		__INFO( "It's only for waiting the result of agent" );
+		__INFO( "Sleep. It's only for waiting to terminate life cycle actor" );
 		
-		Thread.sleep( 1200 );	
+		Thread.sleep( 200 );	
 		
 		___WHEN("[6] It's checked all child actor cycle life");
 		
-		final String resAllStateCycleLife = logAllCycleLife.get();
+		final String resAllStateCycleLife = Await.result(logAllCycleLife.future(), Duration.create( "300 sec" ) );
 		
 		___THEN( "[6] The child actor it's started two times because its supervisor "
 				+ "is restarted [the exception is scalated]. The all life cycle "

@@ -28,7 +28,7 @@ public class ActorLetItCrashTestResume extends TestBase {
 				+ "added with configuration proxied actor. In this case "
 				+ "supervision strategy is 'resume'. If child actor is crashed, "
 				+ "the exception is not propaged and the actor is not "
-				+ "restarted" );
+				+ "restarted." );
 		
 
 		final Agent<String> logAllCycleLife = Agent.create( "", ExecutionContexts.global() );
@@ -119,16 +119,16 @@ public class ActorLetItCrashTestResume extends TestBase {
 		
 		actorRef.tell(PoisonPill.getInstance(), ActorRef.noSender());
 		
-		__INFO( "It's only for waiting the result of agent" );
+		__INFO( "Sleep. It's only for waiting to terminate life cycle actor" );
 		
-		Thread.sleep( 1000 );
+		Thread.sleep( 200 );
 		
 		___WHEN("[4] It's checked all child actor cycle life");
 		
-		final String resAllStateCycleLife = logAllCycleLife.get();
-		
+		final String resAllStateCycleLife = Await.result(logAllCycleLife.future(), Duration.create( "300 sec" ) );
+				
 		___THEN( "[4] When the exception is throwed, the child actor is not "
-				+ "stoped. The cycle life has to be: \n"
+				+ "stoped and i's is not restarted. The cycle life has to be:\n"
 				+ "CONSTRUCTOR" 
 					+ " >> AROUND_PRE_START"
 					 + " >> PRE_START"

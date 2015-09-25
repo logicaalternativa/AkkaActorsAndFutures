@@ -3,6 +3,8 @@ package com.logicaalternativa.examples.akka.testbase;
 import org.junit.After;
 import org.junit.Before;
 
+import scala.concurrent.Await;
+import scala.concurrent.duration.Duration;
 import akka.actor.ActorSystem;
 import akka.agent.Agent;
 import akka.dispatch.ExecutionContexts;
@@ -108,9 +110,9 @@ public class TestBase {
 		
 	}
 	
-	protected Boolean getResultBoolean() {
+	protected Boolean getResultBoolean() throws Exception {
 		
-		return resultBoolean.get();
+		return Await.result( resultBoolean.future(), Duration.create("300 sec") );
 	}
 	
 	

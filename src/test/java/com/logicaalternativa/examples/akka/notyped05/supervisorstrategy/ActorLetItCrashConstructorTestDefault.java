@@ -43,10 +43,7 @@ public class ActorLetItCrashConstructorTestDefault extends TestBase {
 		
 		final ActorRef actorRef = system.actorOf( props, "let-itcrass" );	
 		
-		initResultBoolean();
-		
-		
-		__INFO( "**************************************************************" );
+		initResultBoolean();		
 		
 		___WHEN(" It send a message state");
 		

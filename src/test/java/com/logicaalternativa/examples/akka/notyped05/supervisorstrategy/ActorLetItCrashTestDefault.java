@@ -119,13 +119,13 @@ public class ActorLetItCrashTestDefault extends TestBase {
 		actorRef.tell(PoisonPill.getInstance(), ActorRef.noSender());
 		
 		
-		__INFO( "It's only for waiting the result of agents" );
+		__INFO( "Sleep. It's only for waiting to terminate life cycle actor" );
 		
-		Thread.sleep( 1200 );
+		Thread.sleep( 200 );
 		
 		___WHEN("[4] It's checked all child actor cycle life");
 		
-		final String resAllStateCycleLife = logAllCycleLife.get();
+		final String resAllStateCycleLife = Await.result(logAllCycleLife.future(), Duration.create( "300 sec" ) );
 		
 		___THEN( "[4] The all life cycle has to be: \n"
 				+ "CONSTRUCTOR"
