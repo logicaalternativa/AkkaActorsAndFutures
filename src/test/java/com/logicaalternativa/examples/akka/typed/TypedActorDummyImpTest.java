@@ -1,4 +1,4 @@
-package com.logicaalternativa.examples.akka.typed.imp;
+package com.logicaalternativa.examples.akka.typed;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

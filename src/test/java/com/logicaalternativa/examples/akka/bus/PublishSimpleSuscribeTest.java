@@ -1,4 +1,4 @@
-package com.logicaalternativa.examples.akka;
+package com.logicaalternativa.examples.akka.bus;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,6 +10,7 @@ import akka.actor.Props;
 import akka.dispatch.OnComplete;
 import akka.pattern.Patterns;
 
+import com.logicaalternativa.examples.akka.ActorNoTypedLogEvent;
 import com.logicaalternativa.examples.akka.testbase.TestBase;
 
 public class PublishSimpleSuscribeTest extends TestBase {
@@ -18,7 +19,7 @@ public class PublishSimpleSuscribeTest extends TestBase {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void test() throws Exception {
 		
-		final Integer message = 1;
+		final Integer messageInteger = 1;
 		
 		long now = System.currentTimeMillis();
 		
@@ -36,7 +37,7 @@ public class PublishSimpleSuscribeTest extends TestBase {
 		
 		___WHEN( "It's published a message into event bus" );
 
-		system.eventStream().publish( message );
+		system.eventStream().publish( messageInteger );
 		
 		___THEN( "The even is read by the susbriber actors" );
 		
@@ -45,12 +46,12 @@ public class PublishSimpleSuscribeTest extends TestBase {
 		Future future1 = Patterns.ask( actorSuscriber1, "lastMessage" , 5000 );
 		Future future2 = Patterns.ask( actorSuscriber2, "lastMessage" , 5000 );
 		
-		future1.onComplete( new OnCompleteSimpeSusbriber( message ), system.dispatcher() );
-		future2.onComplete( new OnCompleteSimpeSusbriber( message ), system.dispatcher() );
+		future1.onComplete( new OnCompleteSimpeSusbriber( messageInteger ), system.dispatcher() );
+		future2.onComplete( new OnCompleteSimpeSusbriber( messageInteger ), system.dispatcher() );
 		
 		__INFO("Only for waiting all agent results ");
 		
-		Thread.sleep( ( System.currentTimeMillis() - now ) * 10  );
+		Thread.sleep( ( System.currentTimeMillis() - now ) * 5  );
 		
 		
 		__INFO("... and finally, it is going to check all the futur result");

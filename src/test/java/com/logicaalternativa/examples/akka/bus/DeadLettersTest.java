@@ -1,4 +1,4 @@
-package com.logicaalternativa.examples.akka;
+package com.logicaalternativa.examples.akka.bus;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -17,6 +17,8 @@ import akka.actor.Props;
 import akka.pattern.AskTimeoutException;
 import akka.pattern.Patterns;
 
+import com.logicaalternativa.examples.akka.ActorNoTypedDummy;
+import com.logicaalternativa.examples.akka.ActorNoTypedLogEvent;
 import com.logicaalternativa.examples.akka.testbase.TestBase;
 
 public class DeadLettersTest extends TestBase {	
@@ -27,7 +29,7 @@ public class DeadLettersTest extends TestBase {
 		
 		___GIVEN( "It's created an actor and a reader deadletters" );
 		
-		final Props props = Props.create( ActorNoTypedDummyCheckLifeCycle.class );		
+		final Props props = Props.create( ActorNoTypedDummy.class );		
 		
 		final ActorRef actorRef = system.actorOf( props, "dummy");		
 		
@@ -39,9 +41,7 @@ public class DeadLettersTest extends TestBase {
 		
 		final ActorRef actorDeadLetters = system.actorOf( propsReadDeadLetters, "dead-letters" );
 		
-		__INFO( "**************************************************************" );
-		
-		___WHEN(" It is stopped the actor and then it's sent a message");		
+		___WHEN("[1] It is stopped the actor and then it's sent a message");		
 		
 		system.stop( actorRef );		
 		
@@ -55,7 +55,7 @@ public class DeadLettersTest extends TestBase {
 			
 		} catch( Exception e ) {
 			
-			___THEN( "The menssage is loosed The exception must be 'TimeoutException' "
+			___THEN( "[1] The menssage is lost. The exception must be 'TimeoutException' "
 					+ "(" + e.getClass().getSimpleName() + ")");
 			
 			assertTrue( e.getClass().getSimpleName().equals(  TimeoutException.class.getSimpleName() )
@@ -64,11 +64,9 @@ public class DeadLettersTest extends TestBase {
 			
 		}
 		
-		__INFO( "**************************************************************" );
-		
 		__INFO( "And after..." );		
 		
-		___WHEN(" When It's send a 'lastMessage' to check the dead letters");
+		___WHEN("[2] When It's send a 'lastMessage' to check the dead letters");
 		
 		final Future<Object> future2 = Patterns.ask( actorDeadLetters, "lastMessage" , 3000 );
 		
@@ -91,7 +89,7 @@ public class DeadLettersTest extends TestBase {
 										? recipient.path().name()
 												: null;
 									
-		___THEN( "The dead letter message must be 'bye' "
+		___THEN( "[2] The dead letter message must be 'bye' "
 				+ "(" + message + ") and the actor recipient must be"
 				+ " 'dummy' (" + nameActorRef +")" );
 		

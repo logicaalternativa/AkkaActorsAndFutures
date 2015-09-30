@@ -115,7 +115,7 @@ public class ActorLetItCrashTestStop extends TestBase {
 			
 		} catch( Exception e ) {
 			
-			___THEN( " [3] The menssage is loosed The exception must be 'TimeoutException'\n "
+			___THEN( " [3] The menssage is lost. The exception must be 'TimeoutException'\n "
 					+ "(" + e.getClass().getSimpleName() + ")");
 			
 			assertEquals( e.getClass().getSimpleName(), TimeoutException.class.getSimpleName() );			
