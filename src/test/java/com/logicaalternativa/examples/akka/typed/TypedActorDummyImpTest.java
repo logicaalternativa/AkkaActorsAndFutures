@@ -12,9 +12,7 @@ import scala.concurrent.duration.Duration;
 import com.logicaalternativa.examples.akka.testbase.TestBaseTypedActor;
 
 public class TypedActorDummyImpTest extends TestBaseTypedActor {
-	
-
-	
+		
 	@Test
 	public void testEcho() throws Exception{
 		
@@ -37,13 +35,13 @@ public class TypedActorDummyImpTest extends TestBaseTypedActor {
 		
 		
 		___THEN( "Although the execution is executed by other thread. The flow  "
-				+ "waits the future result "
-				+ "(miliSec: "+ miliSec +", time: " + time + " )");
+				+ "waits the response "
+				+ "(miliSec: "+ miliSec +", time: " + time + ")");
 		
 		assertTrue( miliSec <  time );
 		
 		
-		___THEN( "The result of future is 'Echo Hello' (" + resultEcho + ")" );
+		___THEN( "The result should be 'Echo Hello' (" + resultEcho + ")" );
 		
 		assertEquals( "Echo Hello", resultEcho );
 		
@@ -71,14 +69,14 @@ public class TypedActorDummyImpTest extends TestBaseTypedActor {
 		
 		
 		___THEN( "The execution flow doesn't wait the future result "
-				+ "(miliSec: "+ miliSec +", time: " + time + " )");
+				+ "(miliSec: "+ miliSec +", time: " + time + ")");
 		
-		assertTrue( miliSec >  time );
+		assertTrue( miliSec > time );
 		
 		
 		__INFO("... And finally it is checked the future result");
 		
-		String result = Await.result(futureEcho, Duration.create("3 seconds") );
+		String result = Await.result(futureEcho, Duration.create("300 seconds") );
 		
 		
 		___THEN( "The result of future is 'Echo Hello' (" + result + ")" );
@@ -88,7 +86,7 @@ public class TypedActorDummyImpTest extends TestBaseTypedActor {
 	}
 	
 	@Test
-	public void testSleep() throws Exception{
+	public void testReturnVoidWithSleep() throws Exception{
 		
 		___GIVEN( "A typed actor (TypedActorDummy) is loaded in a System Actor " );	
 		
@@ -107,7 +105,7 @@ public class TypedActorDummyImpTest extends TestBaseTypedActor {
 		
 		___THEN( "The execution flow doesn't wait the sleep because the method "
 				+ "is executed in a another thread "
-				+ "(miliSec: "+ miliSec +", time: " + time + " )");
+				+ "(miliSec: "+ miliSec +", time: " + time + ")");
 		
 		assertTrue( time < miliSec );
 		

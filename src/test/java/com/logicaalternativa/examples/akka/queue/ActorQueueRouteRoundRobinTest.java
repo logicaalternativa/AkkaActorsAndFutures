@@ -11,7 +11,9 @@ import java.util.stream.Stream;
 
 import org.junit.Test;
 
+import scala.concurrent.Await;
 import scala.concurrent.Future;
+import scala.concurrent.duration.Duration;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.agent.Agent;
@@ -87,7 +89,7 @@ public class ActorQueueRouteRoundRobinTest extends TestBase {
 		
 		__INFO("Only for waiting all result");
 		
-		Thread.sleep( ( System.currentTimeMillis() - now ) * 10 );
+		Thread.sleep( ( System.currentTimeMillis() - now ) * 2 );
 		
 		
 		Boolean resultBoolean = getResultBoolean();
@@ -99,7 +101,7 @@ public class ActorQueueRouteRoundRobinTest extends TestBase {
 			
 		__INFO("... and finally, it is checked the values of the list");
 		
-		Map<String, List<String>> mapRequest = resultRequest.get();
+		Map<String, List<String>> mapRequest = Await.result( resultRequest.future(), Duration.create( "300 sec" ) );
 		
 		
 		___THEN("Actor number (" + numberActors + ") have to be the same "
@@ -124,7 +126,7 @@ public class ActorQueueRouteRoundRobinTest extends TestBase {
 		__INFO("This is information of messages sent to the actors");
 		
 		return mapRequest.keySet().stream()
-					.peek( p -> loggerActor.info( p + " >> " + mapRequest.get( p) ) )
+					.peek( p -> loggerActor.info( "\n      TRACE: " + p + " >> " + mapRequest.get( p ) ) )
 					.map( p -> mapRequest.get(p).size() )
 					.filter( p -> p == messageForActor );
 	}

@@ -23,7 +23,6 @@ import com.logicaalternativa.examples.akka.testbase.TestBase;
 
 public class DeadLettersTest extends TestBase {	
 	
-	
 	@Test	
 	public void test() throws Exception {
 		

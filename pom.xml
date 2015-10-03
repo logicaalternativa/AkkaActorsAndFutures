@@ -8,7 +8,7 @@
   <name>AkkaActorsAndFuturs</name>
   <url>http://maven.apache.org</url>
   <properties>
-  	<versionAkka>2.3.11</versionAkka>
+  	<versionAkka>2.4.0</versionAkka>
   </properties>
   <dependencies>
     <dependency>
@@ -20,52 +20,20 @@
     
     <dependency>
 	    <groupId>com.typesafe.akka</groupId>
-	    <artifactId>akka-actor_2.10</artifactId>
+	    <artifactId>akka-actor_2.11</artifactId>
 	    <version>${versionAkka}</version>
 	</dependency>
 	
 	<dependency>
     <groupId>com.typesafe.akka</groupId>
-	    <artifactId>akka-agent_2.10</artifactId>
+	    <artifactId>akka-agent_2.11</artifactId>
 	    <version>${versionAkka}</version>
 	</dependency>
-	
-	<dependency>
-      <groupId>org.spockframework</groupId>
-      <artifactId>spock-core</artifactId>
-      <version>1.0-groovy-2.4</version>
-      <scope>test</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-     <version>2.4.3</version>
-      <scope>test</scope>
-    </dependency>
     
   </dependencies>
   <build>
   	<plugins>
-  		<plugin>
-        <!-- The gmavenplus plugin is used to compile Groovy code. To learn more about this plugin, 
-        visit https://github.com/groovy/GMavenPlus/wiki -->
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
-        <version>1.4</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>addSources</goal>
-              <goal>addTestSources</goal>
-              <goal>compile</goal>
-              <goal>testCompile</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      
-      <plugin>
+  	  <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.3</version>

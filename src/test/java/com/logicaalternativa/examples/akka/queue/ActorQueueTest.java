@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import scala.concurrent.Await;
 import scala.concurrent.Future;
+import scala.concurrent.duration.Duration;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.agent.Agent;
@@ -76,9 +78,9 @@ public class ActorQueueTest extends TestBase {
 		
 		__INFO("Only for waiting all agent results ");
 		
-		Thread.sleep( sleep + (System.currentTimeMillis() - now ) * 10  );
+		Thread.sleep( sleep + (System.currentTimeMillis() - now ) * 5 );
 		
-		final String orderResultString = orderResult.get();
+		final String orderResultString = Await.result(orderResult.future(), Duration.create("300 sec"));
 		
 		___THEN( "The sent message order and received message order have to be "
 				+ "the same ('" + orderMessage + "', '"  + orderResultString +"')" );

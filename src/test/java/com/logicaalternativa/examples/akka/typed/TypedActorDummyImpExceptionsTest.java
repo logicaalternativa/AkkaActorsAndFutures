@@ -65,7 +65,6 @@ public class TypedActorDummyImpExceptionsTest extends TestBaseTypedActor {
 		
 	}
 
-
 	@Test
 	public void testRuntimeExceptionFuture() {
 		
@@ -96,7 +95,6 @@ public class TypedActorDummyImpExceptionsTest extends TestBaseTypedActor {
 		}
 		
 	}
-	
 	
 	@SuppressWarnings("rawtypes")
 	@Test
@@ -139,8 +137,6 @@ public class TypedActorDummyImpExceptionsTest extends TestBaseTypedActor {
 		
 	}
 	
-	
-	
 	@Test
 	public void testFutureEcho() throws Exception{
 		
@@ -176,6 +172,5 @@ public class TypedActorDummyImpExceptionsTest extends TestBaseTypedActor {
 		assertEquals( "Echo Hello", result );
 		
 	}
-
 	
 }

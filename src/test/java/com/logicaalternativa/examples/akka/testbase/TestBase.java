@@ -148,13 +148,13 @@ public class TestBase {
 	
 	protected void __INFO( String text) {
 		
-		log( "\n      INFO : " + text );
+		log( "\n     INFO : " + text );
 		
 	}
 	
 	protected String indentText( String typeTraze, String text ) {
 		
-		final String ident = "\n\t";
+		final String ident = "\n     ";
 		final StringBuilder res = new StringBuilder( "\n" );
 		
 		res.append( ident )
@@ -182,11 +182,13 @@ public class TestBase {
 	private StringBuilder indentLine(
 			final StringBuilder res, final String[] words, final String ident) {
 		
+		int lenghtLine = 75;
+
 		StringBuilder lineIdent = new StringBuilder();
 		
 		for (String word : words) {
 			
-			if ( lineIdent.length() + word.length() < 80 ) {
+			if ( lineIdent.length() + word.length() < lenghtLine ) {
 				
 				if ( lineIdent.length() > 0) {
 					
