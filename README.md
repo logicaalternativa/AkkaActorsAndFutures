@@ -1,6 +1,6 @@
 ﻿# akka by example
 
-In this a Java 8 project, examples are used to illustrate the most akka important concepts.
+In this Java 8 project, examples are used to illustrate the most akka important concepts.
 
 The tools are dummy implementations and Junit tests that allow for observation of the behavior of:
 
@@ -12,7 +12,7 @@ The tools are dummy implementations and Junit tests that allow for observation o
 - dead letters
 - typed actors
 
-## Test
+## Tests
 This is a Maven Java project. There are 16 Junit tests that can be run thanks to 'mvn' command:
 
 ### How works the actor's mailbox?
@@ -107,3 +107,6 @@ and
 ```
 mvn -Dtest=com.logicaalternativa.examples.akka.typed.TypedActorDummyImpExceptionsTest#testRuntimeExceptionString test
 ```
+
+*[M.E.](http://www.logicaalternativa.com)*
+
