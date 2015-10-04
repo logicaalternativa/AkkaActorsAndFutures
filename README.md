@@ -99,7 +99,7 @@ and
 mvn -Dtest=com.logicaalternativa.examples.akka.typed.TypedActorDummyImpExceptionsTest#testRuntimeExceptionFuture test
 ```
 
-#### Behavior when it's called a method that returns a object
+#### Behavior when it's called a method that returns an object
 ```
 mvn -Dtest=com.logicaalternativa.examples.akka.typed.TypedActorDummyImpTest#testEcho test
 ```
