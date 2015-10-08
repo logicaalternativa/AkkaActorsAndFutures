@@ -51,22 +51,22 @@ mvn -Dtest=com.logicaalternativa.examples.akka.message.ActorProxyTest#testAwaitF
 
 #### Default strategy
 ```
-mvn -Dtest=com.logicaalternativa.examples.akka.notyped05.supervisorstrategy.ActorLetItCrashTestDefault test
+mvn -Dtest=com.logicaalternativa.examples.akka.supervisorstrategy.ActorLetItCrashTestDefault test
 ```
 
 #### Escalate exception
 ```
-mvn -Dtest=com.logicaalternativa.examples.akka.notyped05.supervisorstrategy.ActorLetItCrashTestEscalate test
+mvn -Dtest=com.logicaalternativa.examples.akka.supervisorstrategy.ActorLetItCrashTestEscalate test
 ```
 
 #### 'Resume' supervision strategy
 ```
-mvn -Dtest=com.logicaalternativa.examples.akka.notyped05.supervisorstrategy.ActorLetItCrashTestResume test
+mvn -Dtest=com.logicaalternativa.examples.akka.supervisorstrategy.ActorLetItCrashTestResume test
 ```
 
 #### Stopping supervised actor
 ```
-mvn -Dtest=com.logicaalternativa.examples.akka.notyped05.supervisorstrategy.ActorLetItCrashTestStop test
+mvn -Dtest=com.logicaalternativa.examples.akka.supervisorstrategy.ActorLetItCrashTestStop test
 ```
 
 ### How works the event bus?

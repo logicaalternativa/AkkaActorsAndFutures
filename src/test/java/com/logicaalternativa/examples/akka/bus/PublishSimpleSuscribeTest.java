@@ -51,7 +51,7 @@ public class PublishSimpleSuscribeTest extends TestBase {
 		
 		__INFO("Only for waiting all agent results ");
 		
-		Thread.sleep( ( System.currentTimeMillis() - now ) * 5  );
+		Thread.sleep( ( System.currentTimeMillis() - now ) * 10  );
 		
 		
 		__INFO("... and finally, it is going to check all the futur result");

@@ -1,4 +1,4 @@
-package com.logicaalternativa.examples.akka.notyped05.supervisorstrategy;
+package com.logicaalternativa.examples.akka.supervisorstrategy;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
