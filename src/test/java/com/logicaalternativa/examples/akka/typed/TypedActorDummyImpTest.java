@@ -41,25 +41,25 @@ public class TypedActorDummyImpTest extends TestBaseTypedActor {
 		
 		final String message = "Hello";
 		
-		final Long miliSec = 2000L;
+		final Long millisec = 2000L;
 		
 		
 		___WHEN( "It's called a method with a message ('" + message + "') that "
 				+ "return a string. Its implementation sleeps for "
-				+ "" + miliSec  + " miliseconds");
+				+ "" + millisec  + " milliseconds");
 		
 		final Long now = System.currentTimeMillis();
 		
-		String resultEcho = typedActorDummy.echo( miliSec, message);
+		String resultEcho = typedActorDummy.echo( millisec, message);
 		
 		Long time = System.currentTimeMillis() - now;
 		
 		
 		___THEN( "Although the execution is executed by other thread. The flow  "
 				+ "waits the response "
-				+ "(miliSec: "+ miliSec +", time: " + time + ")");
+				+ "(millisec: "+ millisec +", time: " + time + ")");
 		
-		assertTrue( miliSec <  time );
+		assertTrue( millisec <  time );
 		
 		
 		___THEN( "The result should be 'Echo Hello' (" + resultEcho + ")" );
@@ -69,30 +69,30 @@ public class TypedActorDummyImpTest extends TestBaseTypedActor {
 	}
 	
 	@Test
-	public void testFutureEcho() throws Exception{
+	public void testfutureEcho() throws Exception{
 		
 		___GIVEN( "A typed actor (TypedActorDummy) is loaded in a System Actor " );	
 		
 		final String message = "Hello";
 		
-		final Long miliSec = 2000L;
+		final Long millisec = 2000L;
 		
 		
 		___WHEN( "It's called a method with a message ('" + message + "') that "
 				+ "return a future. Its implementation sleeps for "
-				+ "" + miliSec  + " miliseconds");
+				+ "" + millisec  + " milliseconds");
 		
 		final Long now = System.currentTimeMillis();
 		
-		Future<String> futureEcho = typedActorDummy.futureEcho( miliSec, message);
+		Future<String> futureEcho = typedActorDummy.futureEcho( millisec, message);
 		
 		Long time = System.currentTimeMillis() - now;
 		
 		
 		___THEN( "The execution flow doesn't wait the future result "
-				+ "(miliSec: "+ miliSec +", time: " + time + ")");
+				+ "(millisec: "+ millisec +", time: " + time + ")");
 		
-		assertTrue( miliSec > time );
+		assertTrue( millisec > time );
 		
 		
 		__INFO("... And finally it is checked the future result");
@@ -111,24 +111,24 @@ public class TypedActorDummyImpTest extends TestBaseTypedActor {
 		
 		___GIVEN( "A typed actor (TypedActorDummy) is loaded in a System Actor " );	
 		
-		final Long miliSec = 2000L;
+		final Long millisec = 2000L;
 		
 		
 		___WHEN( "It's called a method that return a void. Its implementation "
-				+ "sleeps for " + miliSec  + " miliseconds");
+				+ "sleeps for " + millisec  + " milliseconds");
 		
 		final Long now = System.currentTimeMillis();
 		
-		typedActorDummy.sleep( miliSec );
+		typedActorDummy.sleep( millisec );
 		
 		Long time = System.currentTimeMillis() - now;
 		
 		
 		___THEN( "The execution flow doesn't wait the sleep because the method "
 				+ "is executed in a another thread "
-				+ "(miliSec: "+ miliSec +", time: " + time + ")");
+				+ "(millisec: "+ millisec +", time: " + time + ")");
 		
-		assertTrue( time < miliSec );
+		assertTrue( time < millisec );
 		
 	}
 

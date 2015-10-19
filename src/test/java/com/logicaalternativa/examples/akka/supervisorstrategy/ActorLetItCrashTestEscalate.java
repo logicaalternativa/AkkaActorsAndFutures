@@ -269,7 +269,7 @@ public class ActorLetItCrashTestEscalate extends TestBase {
 		final Boolean resultBoolean = getResultBoolean();
 		
 		
-		__INFO("... and finally, it's going to check all the futur results (" + resultBoolean + ")");
+		__INFO("... and finally, it's going to check all the future results (" + resultBoolean + ")");
 		
 		assertEquals( true, resultBoolean );
 		

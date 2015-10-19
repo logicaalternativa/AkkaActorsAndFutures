@@ -48,7 +48,7 @@ public class ActorQueueTest extends TestBase {
 		
 		long now = System.currentTimeMillis();
 		
-		___GIVEN( "It's created an actor that returs the same message or It "
+		___GIVEN( "It's created an actor that returns the same message or It "
 				+ "sleeps for a time" );
 		
 		Agent<String> orderResult = Agent.create("", system.dispatcher() );
@@ -86,7 +86,7 @@ public class ActorQueueTest extends TestBase {
 				public void onComplete(Throwable arg0, Object messageResponse )
 						throws Throwable {
 					
-					___THEN( "The menssage received must be equal to message sent (" + messageResponse + ", " + messageSent + ")" );
+					___THEN( "The message received must be equal to message sent (" + messageResponse + ", " + messageSent + ")" );
 					
 					 addResultAndValue( messageSent.equals( messageResponse ) );
 					
@@ -109,7 +109,7 @@ public class ActorQueueTest extends TestBase {
 		assertEquals(orderMessage, orderResultString );
 		
 		
-		__INFO("... and finally, it is going to check all the futur result");
+		__INFO("... and finally, it is going to check all the future results");
 		
 		assertEquals( true, getResultBoolean() );
 		

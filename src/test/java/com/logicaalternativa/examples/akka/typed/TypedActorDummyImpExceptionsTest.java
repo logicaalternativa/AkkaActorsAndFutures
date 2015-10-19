@@ -42,12 +42,12 @@ public class TypedActorDummyImpExceptionsTest extends TestBaseTypedActor {
 		
 		try {
 			
-			___WHEN( "It's called a method that return void and it's throwed "
+			___WHEN( "It's called a method that return void and it's thrown "
 					+ "an exception" );
 			
 			typedActorDummy.testRuntimeExceptionVoid();
 			
-			___THEN( "The exception is not catched because other thread "
+			___THEN( "The exception is not caught because other thread "
 					+ "executed the implementation (FIRE & FORGET) "
 					+ "[It's like a 'tell']");
 			
@@ -67,7 +67,7 @@ public class TypedActorDummyImpExceptionsTest extends TestBaseTypedActor {
 		
 		try {
 			
-			___WHEN( "It's called a method that return String and it's throwed "
+			___WHEN( "It's called a method that return String and it's thrown "
 					+ "an exception" );
 			
 			typedActorDummy.testRuntimeExceptionString();
@@ -76,7 +76,7 @@ public class TypedActorDummyImpExceptionsTest extends TestBaseTypedActor {
 			
 		} catch (Exception e) {
 			
-			___THEN( "The exception is catched because the result of the "
+			___THEN( "The exception is caught because the result of the "
 					+ "execution in the other thread is waited. The thread is "
 					+ "blocked");
 			
@@ -91,25 +91,25 @@ public class TypedActorDummyImpExceptionsTest extends TestBaseTypedActor {
 		
 		___GIVEN( "A typed actor (TypedActorDummy) is loaded in a System Actor " );
 		
-		___WHEN( "It's called a method that return String and it's throwed "
+		___WHEN( "It's called a method that return String and it's thrown "
 					+ "an exception" );
 			
-		Future<String> resultFuture = typedActorDummy.testRuntimeExceptionFuture();
+		Future<String> resultfuture = typedActorDummy.testRuntimeExceptionFuture();
 		
 		__INFO("... And finally it is checked the future result");
 		
 		try {
 		
-			Await.result( resultFuture, Duration.create("3 seconds") );	
+			Await.result( resultfuture, Duration.create("3 seconds") );	
 			
 			fail("You wouldn't have to be here!!! ");			
 			
 		} catch (Exception e) {
 			
-			___THEN( "The exception is catched because the futur execution in "
-					+ "the other thread is throwed the exception. "
-					+ "The catched exception is the same type that execution "
-					+ "is throwed (RuntimeException) ");
+			___THEN( "The exception is caught because the future execution in "
+					+ "the other thread is thrown the exception. "
+					+ "The caught exception is the same type that execution "
+					+ "is thrown (RuntimeException) ");
 			
 			assertEquals("RuntimeException", e.getClass().getSimpleName() );			
 			
@@ -123,23 +123,23 @@ public class TypedActorDummyImpExceptionsTest extends TestBaseTypedActor {
 		
 		___GIVEN( "A typed actor (TypedActorDummy) is loaded in a System Actor " );
 		
-		___WHEN( "It's called a method that return String and it's throwed "
+		___WHEN( "It's called a method that return String and it's thrown "
 					+ "an exception" );
 			
-		Future<String> resultFuture = typedActorDummy.testRuntimeExceptionFuture();
+		Future<String> resultfuture = typedActorDummy.testRuntimeExceptionFuture();
 		
 		initResultBoolean();
 		
-		resultFuture.onComplete(new OnComplete(){
+		resultfuture.onComplete(new OnComplete(){
 
 			@Override
 			public void onComplete(Throwable arg0, Object arg1)
 					throws Throwable {
 				
-				___THEN( "The Throwable is catched because the futur execution in "
-						+ "the other thread is throwed the exception. "
-						+ "The catched exception is the same type that execution "
-						+ "is throwed (RuntimeException) ");
+				___THEN( "The Throwable is caught because the future execution in "
+						+ "the other thread is thrown the exception. "
+						+ "The caught exception is the same type that execution "
+						+ "is thrown (RuntimeException) ");
 				
 				addResultAndValue( "RuntimeException".equals( arg0.getClass().getSimpleName() ) );
 				
@@ -159,7 +159,7 @@ public class TypedActorDummyImpExceptionsTest extends TestBaseTypedActor {
 	}
 	
 	@Test
-	public void testFutureEcho() throws Exception{
+	public void testfutureEcho() throws Exception{
 		
 		___GIVEN( "A typed actor (TypedActorDummy) is loaded in a System Actor " );
 		
@@ -168,19 +168,19 @@ public class TypedActorDummyImpExceptionsTest extends TestBaseTypedActor {
 		
 		final String message = "Hello";
 		
-		final Long miliSec = 2000L;
+		final Long millisec = 2000L;
 		
 		final Long now = System.currentTimeMillis();
 		
-		Future<String> futureEcho = typedActorDummy.futureEcho( miliSec, message);
+		Future<String> futureEcho = typedActorDummy.futureEcho( millisec, message);
 		
 		Long time = System.currentTimeMillis() - now;
 		
 		
 		___THEN( "The execution flow don't wait the future result "
-				+ "(miliSec: "+ miliSec +", time: " + time + " )");
+				+ "(millisec: "+ millisec +", time: " + time + " )");
 		
-		assertTrue( miliSec >  time );
+		assertTrue( millisec >  time );
 		
 		
 		__INFO("... And finally it is checked the future result");

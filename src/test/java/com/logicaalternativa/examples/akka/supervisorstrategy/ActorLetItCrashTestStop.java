@@ -148,7 +148,7 @@ public class ActorLetItCrashTestStop extends TestBase {
 		
 		final String resAllStateCycleLife = Await.result(logAllCycleLife.future(), Duration.create( "300 sec" ) );
 				
-		___THEN( "[4] When the exception is throwed, the child actor is not "
+		___THEN( "[4] When the exception is thrown, the child actor is not "
 				+ "stoped and i's is not restarted. The cycle life has to be:\n"
 				+ "CONSTRUCTOR" 
 					+ " >> AROUND_PRE_START"
@@ -223,7 +223,7 @@ public class ActorLetItCrashTestStop extends TestBase {
 		
 		Boolean resultBoolean = getResultBoolean();
 		
-		__INFO("... and finally, it's going to check all the futur results (" + resultBoolean + ")");
+		__INFO("... and finally, it's going to check all the future results (" + resultBoolean + ")");
 		
 		assertEquals( true, resultBoolean );
 		

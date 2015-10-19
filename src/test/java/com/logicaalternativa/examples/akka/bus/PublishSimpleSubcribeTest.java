@@ -34,7 +34,7 @@ import akka.pattern.Patterns;
 import com.logicaalternativa.examples.akka.ActorNoTypedLogEvent;
 import com.logicaalternativa.examples.akka.testbase.TestBase;
 
-public class PublishSimpleSuscribeTest extends TestBase {
+public class PublishSimpleSubcribeTest extends TestBase {
 	
 	@Test	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -47,14 +47,14 @@ public class PublishSimpleSuscribeTest extends TestBase {
 		___GIVEN( "It's created two sucriber actors that the general event"
 				+ "bus of akka " );
 		
-		final Props propsSuscriber = Props.create
+		final Props propsSubcriber = Props.create
 				( 	
 					ActorNoTypedLogEvent.class,
 					() -> new ActorNoTypedLogEvent<Integer>( Integer.class )
 				);
 		
-		ActorRef actorSuscriber1 = system.actorOf( propsSuscriber, "suscriber1" );
-		ActorRef actorSuscriber2 = system.actorOf( propsSuscriber, "suscriber2" );
+		ActorRef actorSubcriber1 = system.actorOf( propsSubcriber, "subcriber1" );
+		ActorRef actorSubcriber2 = system.actorOf( propsSubcriber, "subcriber2" );
 		
 		___WHEN( "It's published a message into event bus" );
 
@@ -64,8 +64,8 @@ public class PublishSimpleSuscribeTest extends TestBase {
 		
 		initResultBoolean();		
 			
-		Future future1 = Patterns.ask( actorSuscriber1, "lastMessage" , 5000 );
-		Future future2 = Patterns.ask( actorSuscriber2, "lastMessage" , 5000 );
+		Future future1 = Patterns.ask( actorSubcriber1, "lastMessage" , 5000 );
+		Future future2 = Patterns.ask( actorSubcriber2, "lastMessage" , 5000 );
 		
 		future1.onComplete( new OnCompleteSimpeSusbriber( messageInteger ), system.dispatcher() );
 		future2.onComplete( new OnCompleteSimpeSusbriber( messageInteger ), system.dispatcher() );
@@ -75,7 +75,7 @@ public class PublishSimpleSuscribeTest extends TestBase {
 		Thread.sleep( ( System.currentTimeMillis() - now ) * 12  );
 		
 		
-		__INFO("... and finally, it is going to check all the futur result");
+		__INFO("... and finally, it is going to check all the future results");
 		
 		assertEquals( true, getResultBoolean() );
 		

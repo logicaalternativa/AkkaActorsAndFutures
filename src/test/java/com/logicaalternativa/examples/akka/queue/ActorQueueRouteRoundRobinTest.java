@@ -60,7 +60,7 @@ public class ActorQueueRouteRoundRobinTest extends TestBase {
 		long now = System.currentTimeMillis();
 		
 		
-		___GIVEN( "It's created an router actor with " + numberActors + " rotee" );
+		___GIVEN( "It's created an router actor with " + numberActors + " routees" );
 		
 		final Props routeeProps = Props.create( ActorNoTypedWhoIam.class );
 		
@@ -115,7 +115,7 @@ public class ActorQueueRouteRoundRobinTest extends TestBase {
 		
 		Boolean resultBoolean = getResultBoolean();
 				
-		__INFO("... and then, it is going to check all the futur result (" + resultBoolean + ")");
+		__INFO("... and then, it is going to check all the futures result (" + resultBoolean + ")");
 		
 		assertEquals( true, resultBoolean );
 		

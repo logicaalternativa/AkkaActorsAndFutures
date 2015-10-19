@@ -69,11 +69,11 @@ public class ActorNoTypedProxy extends UntypedActor  {
 			
 			} else  if ( "await".equals( arg0 ) ) {
 			
-				logger.info("Execute waiting futur");
+				logger.info("Execute waiting future");
 
-				Future<Object> futurs = ask( actorChild, arg0, 5000 );
+				Future<Object> futures = ask( actorChild, arg0, 5000 );
 				
-				Object res = Await.result( futurs, Duration.create( "5 second") );
+				Object res = Await.result( futures, Duration.create( "5 second") );
 	
 				getSender().tell( res, getSelf() );			
 			

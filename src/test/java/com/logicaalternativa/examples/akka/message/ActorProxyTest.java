@@ -41,8 +41,8 @@ public class ActorProxyTest extends TestBase {
 	@Test	
 	public void testForward() throws Exception {
 		
-		___GIVEN( "It creates a proxy actor. It is added whith configuration "
-				+ "proxied actor. The proxy will redirect the messge to "
+		___GIVEN( "It creates a proxy actor. It is added with configuration "
+				+ "proxied actor. The proxy will redirect the message to "
 				+ "proxied actor" );
 		
 		final Props propsChild = Props.create( ActorNoTypedDummy.class );
@@ -70,8 +70,8 @@ public class ActorProxyTest extends TestBase {
 	@Test	
 	public void testRedirectMessageToChild() throws Exception {
 		
-		___GIVEN( "It creates a proxy actor. It is added whith configuration "
-				+ "proxied actor. The proxy will redirect the messge to "
+		___GIVEN( "It creates a proxy actor. It is added with configuration "
+				+ "proxied actor. The proxy will redirect the message to "
 				+ "proxied actor" );
 		
 		final Props propsChild = Props.create( ActorNoTypedDummy.class );
@@ -98,10 +98,10 @@ public class ActorProxyTest extends TestBase {
 	}
 	
 	@Test	
-	public void testAwaitFutur() throws Exception {
+	public void testAwaitfuture() throws Exception {
 		
-		___GIVEN( "It creates a proxy actor. It is added whith configuration "
-				+ "proxied actor. The proxy will redirect the messge to "
+		___GIVEN( "It creates a proxy actor. It is added with configuration "
+				+ "proxied actor. The proxy will redirect the message to "
 				+ "proxied actor" );
 		
 		final Props propsChild = Props.create( ActorNoTypedDummy.class );
@@ -111,7 +111,7 @@ public class ActorProxyTest extends TestBase {
 		final ActorRef actorRef = system.actorOf( props, "my-proxy" );				
 		
 		
-		___WHEN(" It send a message (not 'forward') (Proxy that futurs is been "
+		___WHEN(" It send a message (not 'forward') (Proxy that futures is been "
 				+ "waiting )");
 		
 		final String messageSent = "await";
@@ -130,9 +130,9 @@ public class ActorProxyTest extends TestBase {
 	
 	@SuppressWarnings("unchecked")
 	@Test	
-	public void testFutur() throws Exception {
+	public void testfuture() throws Exception {
 		
-		___GIVEN( "It creates a proxy actor. It is added whith configuration "
+		___GIVEN( "It creates a proxy actor. It is added with configuration "
 				+ "proxied actor. The proxy will redirect the message to "
 				+ "proxied actor" );
 		
@@ -143,7 +143,7 @@ public class ActorProxyTest extends TestBase {
 		final ActorRef actorRef = system.actorOf( props, "my-proxy" );				
 		
 		
-		___WHEN(" It send a message ('futur') (Using futur message method, not "
+		___WHEN(" It send a message ('future') (Using future message method, not "
 				+ "blocking )");
 		
 		final String messageSent = "future";

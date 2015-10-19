@@ -31,10 +31,10 @@ public interface TypedActorDummy {
 
 	public abstract String testRuntimeExceptionString();
 
-	public abstract void sleep(Long miliSec);
+	public abstract void sleep(Long millisec);
 
-	public abstract Future<String> futureEcho(Long miliSec, String message);
+	public abstract Future<String> futureEcho(Long millisec, String message);
 	
-	public abstract String echo(Long miliSec, String message);
+	public abstract String echo(Long millisec, String message);
 
 }

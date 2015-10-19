@@ -49,15 +49,15 @@ public class TestBase {
 		
 		final String simpleNameClass = getClass().getSimpleName();		
 		
-		final String adicionalConfig = setAditionalConfig();		
+		final String additionalConfig = setAdditionalConfig();		
 		
-		createSystemActor( simpleNameClass, adicionalConfig );		
+		createSystemActor( simpleNameClass, additionalConfig );		
 		
 		loggerActor = Logging.getLogger( system, this ); 
 		
 	}
 	
-	protected String setAditionalConfig() {
+	protected String setAdditionalConfig() {
 		
 		return null;
 		

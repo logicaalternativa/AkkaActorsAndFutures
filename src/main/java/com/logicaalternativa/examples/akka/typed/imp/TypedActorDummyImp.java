@@ -57,15 +57,15 @@ public class TypedActorDummyImp implements TypedActorDummy {
 	 * @see com.logicaalternativa.examples.akka.typed.TypedActorDummy#sleep(java.lang.Long)
 	 */
 	@Override
-	public void sleep( final Long miliSec ) {
+	public void sleep( final Long millisec ) {
 		
-		_sleep(miliSec);
+		_sleep(millisec);
 		
 	}
 
-	private void _sleep( final Long miliSec ) {
+	private void _sleep( final Long millisec ) {
 		try {
-			Thread.sleep( miliSec );
+			Thread.sleep( millisec );
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -76,11 +76,11 @@ public class TypedActorDummyImp implements TypedActorDummy {
 	 * @see com.logicaalternativa.examples.akka.typed.TypedActorDummy#futureEcho(java.lang.Long, java.lang.String)
 	 */
 	@Override
-	public Future<String> futureEcho( final Long miliSec, final String message ) {
+	public Future<String> futureEcho( final Long millisec, final String message ) {
 		
 		Promise<String> promise = Futures.promise();
 		
-		_sleep( miliSec );
+		_sleep( millisec );
 		
 		promise.success( "Echo ".concat( message ) );
 		
@@ -91,9 +91,9 @@ public class TypedActorDummyImp implements TypedActorDummy {
 	 * @see com.logicaalternativa.examples.akka.typed.TypedActorDummy#echo(java.lang.Long, java.lang.String)
 	 */
 	@Override
-	public String echo(Long miliSec, String message) {
+	public String echo(Long millisec, String message) {
 		
-		sleep( miliSec );
+		sleep( millisec );
 		
 		return "Echo ".concat( message ) ;
 	}
