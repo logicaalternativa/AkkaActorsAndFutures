@@ -71,7 +71,7 @@ mvn -Dtest=com.logicaalternativa.examples.akka.supervisorstrategy.ActorLetItCras
 
 ### How works the event bus?
 ```
-mvn -Dtest=com.logicaalternativa.examples.akka.bus.PublishSimpleSuscribeTest test
+mvn -Dtest=com.logicaalternativa.examples.akka.bus.PublishSimpleSubcribeTest test
 ```
 
 ### Dead letters
