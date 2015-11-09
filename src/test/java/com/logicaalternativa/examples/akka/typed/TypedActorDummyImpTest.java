@@ -69,7 +69,7 @@ public class TypedActorDummyImpTest extends TestBaseTypedActor {
 	}
 	
 	@Test
-	public void testfutureEcho() throws Exception{
+	public void testFutureEcho() throws Exception{
 		
 		___GIVEN( "A typed actor (TypedActorDummy) is loaded in a System Actor " );	
 		
